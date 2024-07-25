@@ -9,7 +9,7 @@ inputs:
         - user
       with_columns: []
     app_defaults:
-      table: rs360_simulated_data.analytics_rudderstack_consumers_known_latest_day_snapshot_view
+      table: rs360_simulated_data.analytics_rudderstack_consumers_known_latest_day_snapshot
       occurred_at_col: column_timestamp_2  # snapshot_date
       ids:
         - select: "column_varchar_1"  # user_uuid
@@ -23,7 +23,7 @@ inputs:
         - user
       with_columns: []
     app_defaults:
-      table: rs360_simulated_data.segment_ues_users_view
+      table: rs360_simulated_data.segment_ues_users
       occurred_at_col: column_timestamp_1  # received_at
       ids:
         - select: "column_varchar_1"  # id
