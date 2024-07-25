@@ -1,5 +1,3 @@
-# This is a sample file, for detailed reference see: https://rudderlabs.github.io/pywht/
-
 inputs:
   - name: analytics_rudderstack_consumers_known_latest_day_snapshot
     contract:
