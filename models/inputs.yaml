@@ -1,0 +1,45 @@
+# This is a sample file, for detailed reference see: https://rudderlabs.github.io/pywht/
+
+inputs:
+  - name: analytics_rudderstack_consumers_known_latest_day_snapshot
+    contract:
+      is_optional: false
+      is_event_stream: false
+      with_entity_ids:
+        - user
+      with_columns: []
+    app_defaults:
+      table: rs_profiles.analytics_rudderstack_consumers_known_latest_day_snapshot_view
+      occurred_at_col: column_timestamp_2  # snapshot_date
+      ids:
+        - select: "column_varchar_1"  # user_uuid
+          type: user_id
+          entity: user
+  - name: segment_ues_users
+    contract:
+      is_optional: false
+      is_event_stream: false
+      with_entity_ids:
+        - user
+      with_columns: []
+    app_defaults:
+      table: rs_profiles.segment_ues_users_view
+      occurred_at_col: column_timestamp_1  # received_at
+      ids:
+        - select: "column_varchar_1"  # id
+          type: user_id
+          entity: user
+  - name: rudderstack_ues_idenitifies
+    contract:
+      is_optional: false
+      is_event_stream: true
+      with_entity_ids:
+        - user
+      with_columns: []
+    app_defaults:
+      table: rs_profiles.rudderstack_ues_identifies_view
+      occurred_at_col: column_timestamp_1  # dt
+      ids:
+        - select: "column_varchar_1"  # user_id
+          type: user_id
+          entity: user

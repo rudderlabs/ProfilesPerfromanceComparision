@@ -1,0 +1,1751 @@
+ models:
+   - name: user_id_graph
+     model_type: id_stitcher
+     model_spec:
+       validity_time: 24h # 1 day
+       entity_key: user
+       materialization:
+         run_type: incremental
+       edge_sources:
+         - from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+         - from: inputs/segment_ues_users
+         - from: inputs/rudderstack_ues_idenitifies
+        #  - from: inputs/segment_engage_users
+# #   - name: user_features
+# #     model_type: feature_table_model
+# #     model_spec:
+# #       validity_time: 24h # 1 day
+# #       entity_key: user
+# #       features:
+# #         #  - email_hash
+# #         #  - days_since_last_activity_sql
+# #         #  - days_since_last_search_sql
+# #         #  - days_since_property_sold_sql
+# #         #  - days_until_next_property_ownership_anniversary_sql
+# #         #  - declared_buyer_segment_sql
+# #         #  - declared_first_time_buyer_segment_sql
+# #         #  - declared_homeowner_segment_sql
+# #         #  - declared_investor_segment_sql
+# #         #  - declared_owner_mover_segment_sql
+# #         #  - declared_remortgager_segment_sql
+# #         #  - declared_renter_segment_sql
+# #         #  - declared_seller_prop_not_on_market_segment_sql
+# #         #  - declared_seller_prop_on_market_segment_sql
+# #         #  - declared_seller_segment_sql
+# #         #  - derived_buyer_high_intent_segment_sql
+# #         #  - derived_buyer_new_homes_high_intent_segment_sql
+# #         #  - derived_buyer_new_homes_segment_sql
+# #         #  - derived_buyer_recently_moved_segment_sql
+# #         #  - derived_buyer_segment_sql
+# #         #  - derived_downsizer_segment_sql
+# #         #  - derived_first_time_buyer_sql
+# #         #  - derived_owner_mover_segment_sql
+# #         #  - derived_relocator_segment_sql
+# #         #  - derived_remortgager_segment_sql
+# #         #  - derived_renter_high_intent_segment_sql
+# #         #  - derived_renter_recently_moved_segment_sql
+# #         #  - derived_renter_segment_sql
+# #         #  - derived_retiree_sql
+# #         #  - derived_seller_high_intent_segment_sql
+# #         #  - derived_seller_segment_sql
+# #         #  - derived_shared_accommodator_sql
+# #         #  - derived_upsizer_segment_sql
+# #         #  - email_cta_01_sql
+# #         #  - email_cta_02_sql
+# #         #  - email_cta_03_sql
+# #         #  - email_cta_04_sql
+# #         #  - email_cta_05_sql
+# #         #  - geo_intent_buyer_outcodes_3 
+# #         #  - geo_intent_buyer_outcodes_6 
+# #         #  - geo_intent_highest_outcode_3
+# #         #  - geo_intent_highest_outcode_6
+# #         #  - geo_intent_highest_outcode_score_3
+# #         #  - geo_intent_highest_outcode_score_6
+# #         #  - geo_intent_renter_highest_outcode_3
+# #         #  - geo_intent_renter_highest_outcode_score_3
+# #         #  - geo_intent_renter_outcodes_3
+# #         #  - months_to_next_mortgage_end_date_sql
+# #         #  - next_mortgage_end_date_sql
+# #         #  - app_visitor_2_years_sql
+# #         #  - buyer_new_homes_intent_score_cumulative_distribution_sql
+# #         #  - next_best_action_shown_30_day_count_app_download_sql
+# #         #  - next_best_action_shown_30_day_count_for_sale_sql
+# #         #  - next_best_action_shown_30_day_count_new_homes_sql
+# #         #  - next_best_action_shown_30_day_count_property_insight_consent_sql
+# #         #  - next_best_action_shown_30_day_count_remortgage_sql
+# #         #  - next_best_action_shown_30_day_count_track_home_sql
+# #         #  - vendor_lead_next_best_action_shown_30_day_count #renamed for personalisation
+# #         #  - your_situation_skipped #renamed for personalisation
+# #         #  - next_best_action_email_marketing_consent #renamed for personalisation
+# #         #  - is_in_iterable_sql
+# #         #       - instant_valuation_page_viewers_no_valuation_lead_sent_24_hours     #needs adding to BDL table
+# #         #       - marketable_home_value_landers_news     #needs adding to BDL table
+# #         #       - marketable_house_price_landers_news     #needs adding to BDL table
+# #         #       - marketable_pdp_landers_news     #needs adding to BDL table
+# #         #  - ldp_last_viewed_listing_id_sql     
+# #         #  - profiles_bdl_warehouse_snapshot_date
+# #         #  - profiles_last_updated_timestamp
+# #          - count_active_listing_alert
+# #          - count_active_saved_search
+# #          - count_homeowner_tracked_property
+# #          - count_homeowner_tracked_property_local_area_updates_email_consent
+# #          - count_homeowner_tracked_property_updates_email_consent
+# #          - count_tracked_property
+# #          - count_tracked_property_local_area_updates_email_consent
+# #          - count_tracked_property_local_area_updates_push_consent
+# #          - count_tracked_property_updates_email_consent
+# #          - count_tracked_property_updates_push_consent
+# #          - created_at
+# #          - homeowner_tracked_property_local_area_updates_email_consent_uprns
+# #          - homeowner_tracked_property_updates_email_consent_uprns
+# #          - homeowner_tracked_property_uprns
+# #          - last_homeowner_tracked_property_address
+# #         # - last_homeowner_tracked_property_estimate_updated_at   #experimenting with dropping this from a performance perspective
+# #          - last_homeowner_tracked_property_sold_date
+# #          - last_homeowner_tracked_property_sold_price
+# #          - last_homeowner_tracked_property_timestamp
+# #          - last_homeowner_tracked_property_uprn
+# #          - last_landlord_tracked_property_address
+# #          - last_landlord_tracked_property_sold_date
+# #          - last_landlord_tracked_property_sold_price
+# #          - last_landlord_tracked_property_timestamp
+# #          - last_landlord_tracked_property_uprn
+# #          - last_listing_alert_updated_timestamp
+# #          - last_other_tracked_property_timestamp
+# #          - last_saved_search_updated_timestamp
+# #         # - last_tracked_property_estimate_updated_at   #experimenting with dropping this from a performance perspective
+# #          - last_tracked_property_timestamp
+# #          - last_tracked_property_updated_timestamp
+# #          - last_tracked_property_uprn
+# #          - marketing_consent_new_homes
+# #          - marketing_consent_news
+# #          - marketing_consent_offers
+# #          - situation_are_you_a_first_time_buyer
+# #          - situation_are_you_a_first_time_buyer_updated_at
+# #          - situation_are_you_a_homeowner
+# #          - situation_are_you_a_homeowner_updated_at
+# #          - situation_are_you_a_property_investor
+# #          - situation_are_you_a_property_investor_updated_at
+# #          - situation_are_you_looking_to_buy
+# #          - situation_are_you_looking_to_buy_updated_at
+# #          - situation_are_you_selling_a_property
+# #          - situation_are_you_selling_a_property_updated_at
+# #          - situation_do_you_have_a_mortgage
+# #          - situation_do_you_have_a_mortgage_updated_at
+# #          - situation_is_it_already_on_the_market
+# #          - situation_is_it_already_on_the_market_updated_at
+# #          - situation_last_updated_at
+# #         # - situation_module_last_shown_at   #will be a BDL field instead
+# #          - situation_what_is_your_current_property_goal
+# #          - situation_what_is_your_current_property_goal_updated_at
+# #          - situation_when_does_your_current_mortgage_rate_expire
+# #          - situation_when_does_your_current_mortgage_rate_expire_updated_at
+# #          - tracked_property_relationships
+# #          - tracked_property_uprns
+# #          - unregistered
+# #          - user_property_status
+# #          - user_status
+# #          - user_tracked_properties
+# #          - user_tracked_properties_with_consent_and_estimate
+# #          - user_tracked_properties_with_push_consent_and_estimate
+
+# # var_groups:
+#   - name: user_vars
+#     entity_key: user
+#     vars:
+#     #    - entity_var:
+#     #        name: email_hash
+#     #        select: any_value(email_hash_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: days_since_last_activity_sql
+#     #        select: any_value(days_since_last_activity_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: days_since_last_search_sql
+#     #        select: any_value(days_since_last_search_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: days_since_property_sold_sql
+#     #        select: any_value(days_since_property_sold_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: days_until_next_property_ownership_anniversary_sql
+#     #        select: any_value(days_until_next_property_ownership_anniversary_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_buyer_segment_sql
+#     #        select: any_value(declared_buyer_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_first_time_buyer_segment_sql
+#     #        select: any_value(declared_first_time_buyer_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_homeowner_segment_sql
+#     #        select: any_value(declared_homeowner_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_investor_segment_sql
+#     #        select: any_value(declared_investor_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_owner_mover_segment_sql
+#     #        select: any_value(declared_owner_mover_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_remortgager_segment_sql
+#     #        select: any_value(declared_remortgager_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_renter_segment_sql
+#     #        select: any_value(declared_renter_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_seller_prop_not_on_market_segment_sql
+#     #        select: any_value(declared_seller_prop_not_on_market_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_seller_prop_on_market_segment_sql
+#     #        select: any_value(declared_seller_prop_on_market_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: declared_seller_segment_sql
+#     #        select: any_value(declared_seller_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_buyer_high_intent_segment_sql
+#     #        select: any_value(derived_buyer_high_intent_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_buyer_new_homes_high_intent_segment_sql
+#     #        select: any_value(derived_buyer_new_homes_high_intent_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_buyer_new_homes_segment_sql
+#     #        select: any_value(derived_buyer_new_homes_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_buyer_recently_moved_segment_sql
+#     #        select: any_value(derived_buyer_recently_moved_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_buyer_segment_sql
+#     #        select: any_value(derived_buyer_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_downsizer_segment_sql
+#     #        select: any_value(derived_downsizer_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_first_time_buyer_sql
+#     #        select: any_value(derived_first_time_buyer_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_owner_mover_segment_sql
+#     #        select: any_value(derived_owner_mover_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_relocator_segment_sql
+#     #        select: any_value(derived_relocator_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_remortgager_segment_sql
+#     #        select: any_value(derived_remortgager_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_renter_high_intent_segment_sql
+#     #        select: any_value(derived_renter_high_intent_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_renter_recently_moved_segment_sql
+#     #        select: any_value(derived_renter_recently_moved_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_renter_segment_sql
+#     #        select: any_value(derived_renter_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_retiree_sql
+#     #        select: any_value(derived_retiree_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_seller_high_intent_segment_sql
+#     #        select: any_value(derived_seller_high_intent_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_seller_segment_sql
+#     #        select: any_value(derived_seller_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_shared_accommodator_sql
+#     #        select: any_value(derived_shared_accommodator_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: derived_upsizer_segment_sql
+#     #        select: any_value(derived_upsizer_segment_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: email_cta_01_sql
+#     #        select: any_value(email_cta_01_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: email_cta_02_sql
+#     #        select: any_value(email_cta_02_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: email_cta_03_sql
+#     #        select: any_value(email_cta_03_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: email_cta_04_sql
+#     #        select: any_value(email_cta_04_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: email_cta_05_sql
+#     #        select: any_value(email_cta_05_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_buyer_outcodes_3
+#     #        select: any_value(geo_intent_buyer_outcodes_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_buyer_outcodes_6
+#     #        select: any_value(geo_intent_buyer_outcodes_6)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_highest_outcode_3
+#     #        select: any_value(geo_intent_highest_outcode_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_highest_outcode_6
+#     #        select: any_value(geo_intent_highest_outcode_6)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_highest_outcode_score_3
+#     #        select: any_value(geo_intent_highest_outcode_score_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_highest_outcode_score_6
+#     #        select: any_value(geo_intent_highest_outcode_score_6)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_renter_highest_outcode_3
+#     #        select: any_value(geo_intent_renter_highest_outcode_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_renter_highest_outcode_score_3
+#     #        select: any_value(geo_intent_renter_highest_outcode_score_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: geo_intent_renter_outcodes_3
+#     #        select: any_value(geo_intent_renter_outcodes_3)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#     #        description:
+#     #    - entity_var:
+#     #        name: months_to_next_mortgage_end_date_sql
+#     #        select: any_value(months_to_next_mortgage_end_date_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_mortgage_end_date_sql
+#     #        select: any_value(next_mortgage_end_date_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: app_visitor_2_years_sql
+#     #        select: any_value(app_visitor_2_years_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: buyer_new_homes_intent_score_cumulative_distribution_sql
+#     #        select: any_value(buyer_new_homes_intent_score_cumulative_distribution_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_app_download_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_app_download_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_for_sale_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_for_sale_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_new_homes_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_new_homes_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_property_insight_consent_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_property_insight_consent_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_remortgage_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_remortgage_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_shown_30_day_count_track_home_sql
+#     #        select: any_value(next_best_action_shown_30_day_count_track_home_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: vendor_lead_next_best_action_shown_30_day_count #renamed for personalisation
+#     #        select: any_value(next_best_action_shown_30_day_count_vendor_lead_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: your_situation_skipped #renamed and putting logic here for personalisation 
+#     #        select: any_value(CASE WHEN your_situation_skipped_30_day_count_sql > 0 THEN TRUE ELSE FALSE END)    
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: next_best_action_email_marketing_consent #renamed for personalisation
+#     #        select: any_value(email_marketing_nba_eligible_sql)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #        name: profiles_bdl_warehouse_snapshot_date
+#     #        select: any_value(snapshot_date)
+#     #        from: inputs/analytics_rudderstack_consumers_known_latest_day_snapshot
+#     #        description:
+#     #    - entity_var:
+#     #         name: profiles_last_updated_timestamp
+#     #         select: any_value(sysdate)
+#     #         from: inputs/segment_ues_users
+#     #         description:
+#        - entity_var:
+#            name: count_active_listing_alert_seg
+#            select: any_value(count_active_listing_alert)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: count_active_saved_search_seg
+#            select: any_value(count_active_saved_search)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: count_homeowner_tracked_property_seg
+#            select: any_value(count_homeowner_tracked_property)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: count_homeowner_tracked_property_local_area_updates_email_consent_seg
+#            select: any_value(count_homeowner_tracked_property_local_area_updates_email_consent)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: count_homeowner_tracked_property_updates_email_consent_seg
+#            select: any_value(count_homeowner_tracked_property_updates_email_consent)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_seg
+#           select: any_value(count_tracked_property)
+#           from: inputs/segment_ues_users
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_local_area_updates_email_consent_seg
+#           select: any_value(count_tracked_property_local_area_updates_email_consent)
+#           from: inputs/segment_ues_users
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_local_area_updates_push_consent_seg
+#           select: any_value(count_tracked_property_local_area_updates_push_consent)
+#           from: inputs/segment_ues_users
+#           is_feature: false
+#        - entity_var:
+#            name: count_tracked_property_updates_email_consent_seg
+#            select: any_value(count_tracked_property_updates_email_consent)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: count_tracked_property_updates_push_consent_seg
+#            select: any_value(count_tracked_property_updates_push_consent)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: created_at_seg
+#            select: any_value(created_at)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: homeowner_tracked_property_local_area_updates_email_consent_uprns_seg
+#            select: any_value(homeowner_tracked_property_local_area_updates_email_consent_uprns)
+#            from: inputs/segment_ues_users
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            is_feature: false
+#        - entity_var:
+#            name: homeowner_tracked_property_updates_email_consent_uprns_seg
+#            select: any_value(homeowner_tracked_property_updates_email_consent_uprns)
+#            from: inputs/segment_ues_users
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            is_feature: false
+#        - entity_var:
+#            name: homeowner_tracked_property_uprns_seg
+#            select: any_value(homeowner_tracked_property_uprns)
+#            from: inputs/segment_ues_users
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            is_feature: false
+#        - entity_var:
+#            name: last_homeowner_tracked_property_address_seg
+#            select: any_value(last_homeowner_tracked_property_address)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#     #    - entity_var:
+#     #        name: last_homeowner_tracked_property_estimate_updated_at_seg
+#     #        select: any_value(last_homeowner_tracked_property_estimate_updated_at)
+#     #        from: inputs/segment_ues_users
+#     #        is_feature: false
+#        - entity_var:
+#            name: last_homeowner_tracked_property_sold_date_seg
+#            select: any_value(last_homeowner_tracked_property_sold_date)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_homeowner_tracked_property_sold_price_seg
+#            select: any_value(last_homeowner_tracked_property_sold_price)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_homeowner_tracked_property_timestamp_seg
+#            select: any_value(last_homeowner_tracked_property_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_homeowner_tracked_property_uprn_seg
+#            select: any_value(last_homeowner_tracked_property_uprn)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_landlord_tracked_property_address_seg
+#            select: any_value(last_landlord_tracked_property_address)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_landlord_tracked_property_sold_date_seg
+#            select: any_value(last_landlord_tracked_property_sold_date)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_landlord_tracked_property_sold_price_seg
+#            select: any_value(last_landlord_tracked_property_sold_price)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_landlord_tracked_property_timestamp_seg
+#            select: any_value(last_landlord_tracked_property_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_landlord_tracked_property_uprn_seg
+#            select: any_value(last_landlord_tracked_property_uprn)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_listing_alert_updated_timestamp_seg
+#            select: any_value(last_listing_alert_updated_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_other_tracked_property_timestamp_seg
+#            select: any_value(last_other_tracked_property_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_saved_search_updated_timestamp_seg
+#            select: any_value(last_saved_search_updated_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#     #    - entity_var:
+#     #        name: last_tracked_property_estimate_updated_at_seg
+#     #        select: any_value(last_tracked_property_estimate_updated_at)
+#     #        from: inputs/segment_ues_users
+#     #        is_feature: false
+#        - entity_var:
+#            name: last_tracked_property_timestamp_seg
+#            select: any_value(last_tracked_property_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_tracked_property_updated_timestamp_seg
+#            select: any_value(last_tracked_property_updated_timestamp)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: last_tracked_property_uprn_seg
+#            select: any_value(last_tracked_property_uprn)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#            name: marketing_consent_new_homes_seg
+#            select: any_value(marketing_consent_new_homes)
+#            from: inputs/segment_ues_users
+#            is_feature: false
+#        - entity_var:
+#             name: marketing_consent_news_seg
+#             select: any_value(marketing_consent_news)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: marketing_consent_offers_seg
+#             select: any_value(marketing_consent_offers)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_first_time_buyer_seg
+#             select: any_value(situation_are_you_a_first_time_buyer)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_first_time_buyer_updated_at_seg
+#             select: any_value(situation_are_you_a_first_time_buyer_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_homeowner_seg
+#             select: any_value(situation_are_you_a_homeowner)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_homeowner_updated_at_seg
+#             select: any_value(situation_are_you_a_homeowner_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_property_investor_seg
+#             select: any_value(situation_are_you_a_property_investor)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_a_property_investor_updated_at_seg
+#             select: any_value(situation_are_you_a_property_investor_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_looking_to_buy_seg
+#             select: any_value(situation_are_you_looking_to_buy)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_looking_to_buy_updated_at_seg
+#             select: any_value(situation_are_you_looking_to_buy_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_selling_a_property_seg
+#             select: any_value(situation_are_you_selling_a_property)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_are_you_selling_a_property_updated_at_seg
+#             select: any_value(situation_are_you_selling_a_property_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_do_you_have_a_mortgage_seg
+#             select: any_value(situation_do_you_have_a_mortgage)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_do_you_have_a_mortgage_updated_at_seg
+#             select: any_value(situation_do_you_have_a_mortgage_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_is_it_already_on_the_market_seg
+#             select: any_value(situation_is_it_already_on_the_market)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_is_it_already_on_the_market_updated_at_seg
+#             select: any_value(situation_is_it_already_on_the_market_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_last_updated_at_seg
+#             select: any_value(situation_last_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#     #    - entity_var:
+#     #         name: situation_module_last_shown_at_seg
+#     #         select: any_value(situation_module_last_shown_at)
+#     #         from: inputs/segment_ues_users
+#     #         is_feature: false
+#        - entity_var:
+#             name: situation_what_is_your_current_property_goal_seg
+#             select: any_value(situation_what_is_your_current_property_goal)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_what_is_your_current_property_goal_updated_at_seg
+#             select: any_value(situation_what_is_your_current_property_goal_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_when_does_your_current_mortgage_rate_expire_seg
+#             select: any_value(situation_when_does_your_current_mortgage_rate_expire)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: situation_when_does_your_current_mortgage_rate_expire_updated_at_seg
+#             select: any_value(situation_when_does_your_current_mortgage_rate_expire_updated_at)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: tracked_property_relationships_seg
+#             select: any_value(tracked_property_relationships)
+#             from: inputs/segment_ues_users
+#             column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#             is_feature: false
+#        - entity_var:
+#             name: tracked_property_uprns_seg
+#             select: any_value(tracked_property_uprns)
+#             from: inputs/segment_ues_users
+#             column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#             is_feature: false
+#        - entity_var:
+#             name: unregistered_seg
+#             select: any_value(unregistered)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: user_property_status_seg
+#             select: any_value(user_property_status)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: user_status_seg
+#             select: any_value(user_status)
+#             from: inputs/segment_ues_users
+#             is_feature: false
+#        - entity_var:
+#             name: user_tracked_properties_seg
+#             select: any_value(user_tracked_properties)
+#             from: inputs/segment_ues_users
+#             column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#             is_feature: false
+#        - entity_var:
+#             name: user_tracked_properties_with_consent_and_estimate_seg
+#             select: any_value(user_tracked_properties_with_consent_and_estimate)
+#             from: inputs/segment_ues_users
+#             column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#             is_feature: false
+#        - entity_var:
+#             name: user_tracked_properties_with_push_consent_and_estimate_seg
+#             select: any_value(user_tracked_properties_with_push_consent_and_estimate)
+#             from: inputs/segment_ues_users
+#             column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#             is_feature: false
+
+#        - entity_var:
+#             name: marketing_consent_news_rs
+#             select: first_value(marketing_consent_news)
+#             window:
+#               order_by:
+#                 - _timestamp desc
+#               frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#             from: inputs/rudderstack_ues_idenitifies
+#             where: marketing_consent_news is not null
+#             is_feature: false
+#        - entity_var:
+#           name: count_active_listing_alert_rs
+#           select: first_value(count_active_listing_alert)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_active_listing_alert is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_active_saved_search_rs
+#           select: first_value(count_active_saved_search)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_active_saved_search is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_homeowner_tracked_property_rs
+#           select: first_value(count_homeowner_tracked_property)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_homeowner_tracked_property is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_homeowner_tracked_property_local_area_updates_email_consent_rs
+#           select: first_value(count_homeowner_tracked_property_local_area_updates_email_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_homeowner_tracked_property_local_area_updates_email_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_homeowner_tracked_property_updates_email_consent_rs
+#           select: first_value(count_homeowner_tracked_property_updates_email_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_homeowner_tracked_property_updates_email_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_rs
+#           select: first_value(count_tracked_property)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_tracked_property is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_local_area_updates_email_consent_rs
+#           select: first_value(count_tracked_property_local_area_updates_email_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_tracked_property_local_area_updates_email_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_local_area_updates_push_consent_rs
+#           select: first_value(count_tracked_property_local_area_updates_push_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_tracked_property_local_area_updates_push_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_updates_email_consent_rs
+#           select: first_value(count_tracked_property_updates_email_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_tracked_property_updates_email_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: count_tracked_property_updates_push_consent_rs
+#           select: first_value(count_tracked_property_updates_push_consent)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: count_tracked_property_updates_push_consent is not null
+#           is_feature: false
+#        - entity_var:
+#           name: created_at_rs
+#           select: first_value(created_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: created_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: homeowner_tracked_property_local_area_updates_email_consent_uprns_rs
+#           select: first_value(homeowner_tracked_property_local_area_updates_email_consent_uprns)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: homeowner_tracked_property_local_area_updates_email_consent_uprns is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: homeowner_tracked_property_updates_email_consent_uprns_rs
+#           select: first_value(homeowner_tracked_property_updates_email_consent_uprns)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: homeowner_tracked_property_updates_email_consent_uprns is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: homeowner_tracked_property_uprns_rs
+#           select: first_value(homeowner_tracked_property_uprns)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: homeowner_tracked_property_uprns is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: last_homeowner_tracked_property_address_rs
+#           select: first_value(last_homeowner_tracked_property_address)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_homeowner_tracked_property_address is not null
+#           is_feature: false
+#     #    - entity_var:
+#     #       name: last_homeowner_tracked_property_estimate_updated_at_rs
+#     #       select: first_value(last_homeowner_tracked_property_estimate_updated_at)
+#     #       window:
+#     #        order_by:
+#     #        - _timestamp desc
+#     #        frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#     #       from: inputs/rudderstack_ues_idenitifies
+#     #       where: last_homeowner_tracked_property_estimate_updated_at is not null
+#     #       is_feature: false
+#        - entity_var:
+#           name: last_homeowner_tracked_property_sold_date_rs
+#           select: first_value(last_homeowner_tracked_property_sold_date)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_homeowner_tracked_property_sold_date is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_homeowner_tracked_property_sold_price_rs
+#           select: first_value(last_homeowner_tracked_property_sold_price)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_homeowner_tracked_property_sold_price is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_homeowner_tracked_property_timestamp_rs
+#           select: first_value(last_homeowner_tracked_property_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_homeowner_tracked_property_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_homeowner_tracked_property_uprn_rs
+#           select: first_value(last_homeowner_tracked_property_uprn)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_homeowner_tracked_property_uprn is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_landlord_tracked_property_address_rs
+#           select: first_value(last_landlord_tracked_property_address)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_landlord_tracked_property_address is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_landlord_tracked_property_sold_date_rs
+#           select: first_value(last_landlord_tracked_property_sold_date)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_landlord_tracked_property_sold_date is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_landlord_tracked_property_sold_price_rs
+#           select: first_value(last_landlord_tracked_property_sold_price)
+#           window:
+#            order_by:
+#             - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_landlord_tracked_property_sold_price is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_landlord_tracked_property_timestamp_rs
+#           select: first_value(last_landlord_tracked_property_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_landlord_tracked_property_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_landlord_tracked_property_uprn_rs
+#           select: first_value(last_landlord_tracked_property_uprn)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_landlord_tracked_property_uprn is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_listing_alert_updated_timestamp_rs
+#           select: first_value(last_listing_alert_updated_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_listing_alert_updated_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_other_tracked_property_timestamp_rs
+#           select: first_value(last_other_tracked_property_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_other_tracked_property_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_saved_search_updated_timestamp_rs
+#           select: first_value(last_saved_search_updated_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_saved_search_updated_timestamp is not null
+#           is_feature: false
+#     #    - entity_var:
+#     #       name: last_tracked_property_estimate_updated_at_rs
+#     #       select: first_value(last_tracked_property_estimate_updated_at)
+#     #       window:
+#     #        order_by:
+#     #        - _timestamp desc
+#     #        frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#     #       from: inputs/rudderstack_ues_idenitifies
+#     #       where: last_tracked_property_estimate_updated_at is not null
+#     #       is_feature: false
+#        - entity_var:
+#           name: last_tracked_property_timestamp_rs
+#           select: first_value(last_tracked_property_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_tracked_property_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_tracked_property_updated_timestamp_rs
+#           select: first_value(last_tracked_property_updated_timestamp)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_tracked_property_updated_timestamp is not null
+#           is_feature: false
+#        - entity_var:
+#           name: last_tracked_property_uprn_rs
+#           select: first_value(last_tracked_property_uprn)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: last_tracked_property_uprn is not null
+#           is_feature: false
+#        - entity_var:
+#           name: marketing_consent_new_homes_rs
+#           select: first_value(marketing_consent_new_homes)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: marketing_consent_new_homes is not null
+#           is_feature: false
+#        - entity_var:
+#           name: marketing_consent_offers_rs
+#           select: first_value(marketing_consent_offers)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: marketing_consent_offers is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_first_time_buyer_rs
+#           select: first_value(situation_are_you_a_first_time_buyer)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_first_time_buyer is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_first_time_buyer_updated_at_rs
+#           select: first_value(situation_are_you_a_first_time_buyer_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_first_time_buyer_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_homeowner_rs
+#           select: first_value(situation_are_you_a_homeowner)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_homeowner is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_homeowner_updated_at_rs
+#           select: first_value(situation_are_you_a_homeowner_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_homeowner_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_property_investor_rs
+#           select: first_value(situation_are_you_a_property_investor)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_property_investor is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_a_property_investor_updated_at_rs
+#           select: first_value(situation_are_you_a_property_investor_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_a_property_investor_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_looking_to_buy_rs
+#           select: first_value(situation_are_you_looking_to_buy)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_looking_to_buy is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_looking_to_buy_updated_at_rs
+#           select: first_value(situation_are_you_looking_to_buy_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_looking_to_buy_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_selling_a_property_rs
+#           select: first_value(situation_are_you_selling_a_property)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_selling_a_property is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_are_you_selling_a_property_updated_at_rs
+#           select: first_value(situation_are_you_selling_a_property_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_are_you_selling_a_property_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_do_you_have_a_mortgage_rs
+#           select: first_value(situation_do_you_have_a_mortgage)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_do_you_have_a_mortgage is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_do_you_have_a_mortgage_updated_at_rs
+#           select: first_value(situation_do_you_have_a_mortgage_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_do_you_have_a_mortgage_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_is_it_already_on_the_market_rs
+#           select: first_value(situation_is_it_already_on_the_market)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_is_it_already_on_the_market is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_is_it_already_on_the_market_updated_at_rs
+#           select: first_value(situation_is_it_already_on_the_market_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_is_it_already_on_the_market_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_last_updated_at_rs
+#           select: first_value(situation_last_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_last_updated_at is not null
+#           is_feature: false
+#     #    - entity_var:
+#     #       name: situation_module_last_shown_at_rs
+#     #       select: first_value(situation_module_last_shown_at)
+#     #       window:
+#     #        order_by:
+#     #        - _timestamp desc
+#     #        frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#     #       from: inputs/rudderstack_ues_idenitifies
+#     #       where: situation_module_last_shown_at is not null
+#     #       is_feature: false
+#        - entity_var:
+#           name: situation_what_is_your_current_property_goal_rs
+#           select: first_value(situation_what_is_your_current_property_goal)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_what_is_your_current_property_goal is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_what_is_your_current_property_goal_updated_at_rs
+#           select: first_value(situation_what_is_your_current_property_goal_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_what_is_your_current_property_goal_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_when_does_your_current_mortgage_rate_expire_rs
+#           select: first_value(situation_when_does_your_current_mortgage_rate_expire)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_when_does_your_current_mortgage_rate_expire is not null
+#           is_feature: false
+#        - entity_var:
+#           name: situation_when_does_your_current_mortgage_rate_expire_updated_at_rs
+#           select: first_value(situation_when_does_your_current_mortgage_rate_expire_updated_at)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: situation_when_does_your_current_mortgage_rate_expire_updated_at is not null
+#           is_feature: false
+#        - entity_var:
+#           name: tracked_property_relationships_rs
+#           select: first_value(tracked_property_relationships)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: tracked_property_relationships is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}' 
+#           is_feature: false
+#        - entity_var:
+#           name: tracked_property_uprns_rs
+#           select: first_value(tracked_property_uprns)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: tracked_property_uprns is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: unregistered_rs
+#           select: first_value(unregistered)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: unregistered is not null
+#           is_feature: false
+#        - entity_var:
+#           name: user_property_status_rs
+#           select: first_value(user_property_status)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: user_property_status is not null
+#           is_feature: false
+#        - entity_var:
+#           name: user_status_rs
+#           select: first_value(user_status)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: user_status is not null
+#           is_feature: false
+#        - entity_var:
+#           name: user_tracked_properties_rs
+#           select: first_value(user_tracked_properties)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: user_tracked_properties is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: user_tracked_properties_with_consent_and_estimate_rs
+#           select: first_value(user_tracked_properties_with_consent_and_estimate)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: user_tracked_properties_with_consent_and_estimate is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#           name: user_tracked_properties_with_push_consent_and_estimate_rs
+#           select: first_value(user_tracked_properties_with_push_consent_and_estimate)
+#           window:
+#            order_by:
+#            - _timestamp desc
+#            frame_clause: ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+#           from: inputs/rudderstack_ues_idenitifies
+#           where: user_tracked_properties_with_push_consent_and_estimate is not null
+#           column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#           is_feature: false
+#        - entity_var:
+#             name: marketing_consent_news
+#             select: coalesce({{user.Var("marketing_consent_news_rs")}},{{user.Var("marketing_consent_news_seg")}})
+#             description:
+#        - entity_var:
+#             name: count_active_listing_alert
+#             select: coalesce({{user.Var("count_active_listing_alert_rs")}},{{user.Var("count_active_listing_alert_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_active_saved_search
+#             select: coalesce({{user.Var("count_active_saved_search_rs")}},{{user.Var("count_active_saved_search_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_homeowner_tracked_property
+#             select: coalesce({{user.Var("count_homeowner_tracked_property_rs")}},{{user.Var("count_homeowner_tracked_property_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_homeowner_tracked_property_local_area_updates_email_consent
+#             select: coalesce({{user.Var("count_homeowner_tracked_property_local_area_updates_email_consent_rs")}},{{user.Var("count_homeowner_tracked_property_local_area_updates_email_consent_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_homeowner_tracked_property_updates_email_consent
+#             select: coalesce({{user.Var("count_homeowner_tracked_property_updates_email_consent_rs")}},{{user.Var("count_homeowner_tracked_property_updates_email_consent_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_tracked_property
+#             select: coalesce({{user.Var("count_tracked_property_rs")}},{{user.Var("count_tracked_property_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_tracked_property_local_area_updates_email_consent
+#             select: coalesce({{user.Var("count_tracked_property_local_area_updates_email_consent_rs")}},{{user.Var("count_tracked_property_local_area_updates_email_consent_seg")}})
+#             description:
+
+#        - entity_var:
+#             name: count_tracked_property_local_area_updates_push_consent
+#             select: coalesce({{user.Var("count_tracked_property_local_area_updates_push_consent_rs")}},{{user.Var("count_tracked_property_local_area_updates_push_consent_seg")}})
+#             description:
+
+#        - entity_var:
+#            name: count_tracked_property_updates_email_consent
+#            select: coalesce({{user.Var("count_tracked_property_updates_email_consent_rs")}},{{user.Var("count_tracked_property_updates_email_consent_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: count_tracked_property_updates_push_consent
+#            select: coalesce({{user.Var("count_tracked_property_updates_push_consent_rs")}},{{user.Var("count_tracked_property_updates_push_consent_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: created_at
+#            select: coalesce({{user.Var("created_at_rs")}},{{user.Var("created_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: homeowner_tracked_property_local_area_updates_email_consent_uprns
+#            select: coalesce({{user.Var("homeowner_tracked_property_local_area_updates_email_consent_uprns_rs")}},{{user.Var("homeowner_tracked_property_local_area_updates_email_consent_uprns_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: homeowner_tracked_property_updates_email_consent_uprns
+#            select: coalesce({{user.Var("homeowner_tracked_property_updates_email_consent_uprns_rs")}},{{user.Var("homeowner_tracked_property_updates_email_consent_uprns_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: homeowner_tracked_property_uprns
+#            select: coalesce({{user.Var("homeowner_tracked_property_uprns_rs")}},{{user.Var("homeowner_tracked_property_uprns_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: last_homeowner_tracked_property_address
+#            select: coalesce({{user.Var("last_homeowner_tracked_property_address_rs")}},{{user.Var("last_homeowner_tracked_property_address_seg")}})
+#            description:
+
+#     #    - entity_var:
+#     #        name: last_homeowner_tracked_property_estimate_updated_at
+#     #        select: coalesce({{user.Var("last_homeowner_tracked_property_estimate_updated_at_rs")}},{{user.Var("last_homeowner_tracked_property_estimate_updated_at_seg")}})
+#     #        description:
+
+#        - entity_var:
+#            name: last_homeowner_tracked_property_sold_date
+#            select: coalesce({{user.Var("last_homeowner_tracked_property_sold_date_rs")}},{{user.Var("last_homeowner_tracked_property_sold_date_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_homeowner_tracked_property_sold_price
+#            select: coalesce({{user.Var("last_homeowner_tracked_property_sold_price_rs")}},{{user.Var("last_homeowner_tracked_property_sold_price_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_homeowner_tracked_property_timestamp
+#            select: coalesce({{user.Var("last_homeowner_tracked_property_timestamp_rs")}},{{user.Var("last_homeowner_tracked_property_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_homeowner_tracked_property_uprn
+#            select: coalesce({{user.Var("last_homeowner_tracked_property_uprn_rs")}},{{user.Var("last_homeowner_tracked_property_uprn_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_landlord_tracked_property_address
+#            select: coalesce({{user.Var("last_landlord_tracked_property_address_rs")}},{{user.Var("last_landlord_tracked_property_address_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_landlord_tracked_property_sold_date
+#            select: coalesce({{user.Var("last_landlord_tracked_property_sold_date_rs")}},{{user.Var("last_landlord_tracked_property_sold_date_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_landlord_tracked_property_sold_price
+#            select: coalesce({{user.Var("last_landlord_tracked_property_sold_price_rs")}},{{user.Var("last_landlord_tracked_property_sold_price_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_landlord_tracked_property_timestamp
+#            select: coalesce({{user.Var("last_landlord_tracked_property_timestamp_rs")}},{{user.Var("last_landlord_tracked_property_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_landlord_tracked_property_uprn
+#            select: coalesce({{user.Var("last_landlord_tracked_property_uprn_rs")}},{{user.Var("last_landlord_tracked_property_uprn_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_listing_alert_updated_timestamp
+#            select: coalesce({{user.Var("last_listing_alert_updated_timestamp_rs")}},{{user.Var("last_listing_alert_updated_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_other_tracked_property_timestamp
+#            select: coalesce({{user.Var("last_other_tracked_property_timestamp_rs")}},{{user.Var("last_other_tracked_property_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_saved_search_updated_timestamp
+#            select: coalesce({{user.Var("last_saved_search_updated_timestamp_rs")}},{{user.Var("last_saved_search_updated_timestamp_seg")}})
+#            description:
+
+#     #    - entity_var:
+#     #        name: last_tracked_property_estimate_updated_at
+#     #        select: coalesce({{user.Var("last_tracked_property_estimate_updated_at_rs")}},{{user.Var("last_tracked_property_estimate_updated_at_seg")}})
+#     #        description:
+
+#        - entity_var:
+#            name: last_tracked_property_timestamp
+#            select: coalesce({{user.Var("last_tracked_property_timestamp_rs")}},{{user.Var("last_tracked_property_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_tracked_property_updated_timestamp
+#            select: coalesce({{user.Var("last_tracked_property_updated_timestamp_rs")}},{{user.Var("last_tracked_property_updated_timestamp_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: last_tracked_property_uprn
+#            select: coalesce({{user.Var("last_tracked_property_uprn_rs")}},{{user.Var("last_tracked_property_uprn_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: marketing_consent_new_homes
+#            select: coalesce({{user.Var("marketing_consent_new_homes_rs")}},{{user.Var("marketing_consent_new_homes_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: marketing_consent_offers
+#            select: coalesce({{user.Var("marketing_consent_offers_rs")}},{{user.Var("marketing_consent_offers_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_first_time_buyer
+#            select: coalesce({{user.Var("situation_are_you_a_first_time_buyer_rs")}},{{user.Var("situation_are_you_a_first_time_buyer_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_first_time_buyer_updated_at
+#            select: coalesce({{user.Var("situation_are_you_a_first_time_buyer_updated_at_rs")}},{{user.Var("situation_are_you_a_first_time_buyer_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_homeowner
+#            select: coalesce({{user.Var("situation_are_you_a_homeowner_rs")}},{{user.Var("situation_are_you_a_homeowner_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_homeowner_updated_at
+#            select: coalesce({{user.Var("situation_are_you_a_homeowner_updated_at_rs")}},{{user.Var("situation_are_you_a_homeowner_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_property_investor
+#            select: coalesce({{user.Var("situation_are_you_a_property_investor_rs")}},{{user.Var("situation_are_you_a_property_investor_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_a_property_investor_updated_at
+#            select: coalesce({{user.Var("situation_are_you_a_property_investor_updated_at_rs")}},{{user.Var("situation_are_you_a_property_investor_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_looking_to_buy
+#            select: coalesce({{user.Var("situation_are_you_looking_to_buy_rs")}},{{user.Var("situation_are_you_looking_to_buy_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_looking_to_buy_updated_at
+#            select: coalesce({{user.Var("situation_are_you_looking_to_buy_updated_at_rs")}},{{user.Var("situation_are_you_looking_to_buy_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_selling_a_property
+#            select: coalesce({{user.Var("situation_are_you_selling_a_property_rs")}},{{user.Var("situation_are_you_selling_a_property_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_are_you_selling_a_property_updated_at
+#            select: coalesce({{user.Var("situation_are_you_selling_a_property_updated_at_rs")}},{{user.Var("situation_are_you_selling_a_property_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_do_you_have_a_mortgage
+#            select: coalesce({{user.Var("situation_do_you_have_a_mortgage_rs")}},{{user.Var("situation_do_you_have_a_mortgage_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_do_you_have_a_mortgage_updated_at
+#            select: coalesce({{user.Var("situation_do_you_have_a_mortgage_updated_at_rs")}},{{user.Var("situation_do_you_have_a_mortgage_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_is_it_already_on_the_market
+#            select: coalesce({{user.Var("situation_is_it_already_on_the_market_rs")}},{{user.Var("situation_is_it_already_on_the_market_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_is_it_already_on_the_market_updated_at
+#            select: coalesce({{user.Var("situation_is_it_already_on_the_market_updated_at_rs")}},{{user.Var("situation_is_it_already_on_the_market_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_last_updated_at
+#            select: coalesce({{user.Var("situation_last_updated_at_rs")}},{{user.Var("situation_last_updated_at_seg")}})
+#            description:
+
+#     #    - entity_var:
+#     #        name: situation_module_last_shown_at
+#     #        select: coalesce({{user.Var("situation_module_last_shown_at_rs")}},{{user.Var("situation_module_last_shown_at_seg")}})
+#     #        description:
+
+#        - entity_var:
+#            name: situation_what_is_your_current_property_goal
+#            select: coalesce({{user.Var("situation_what_is_your_current_property_goal_rs")}},{{user.Var("situation_what_is_your_current_property_goal_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_what_is_your_current_property_goal_updated_at
+#            select: coalesce({{user.Var("situation_what_is_your_current_property_goal_updated_at_rs")}},{{user.Var("situation_what_is_your_current_property_goal_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_when_does_your_current_mortgage_rate_expire
+#            select: coalesce({{user.Var("situation_when_does_your_current_mortgage_rate_expire_rs")}},{{user.Var("situation_when_does_your_current_mortgage_rate_expire_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: situation_when_does_your_current_mortgage_rate_expire_updated_at
+#            select: coalesce({{user.Var("situation_when_does_your_current_mortgage_rate_expire_updated_at_rs")}},{{user.Var("situation_when_does_your_current_mortgage_rate_expire_updated_at_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: tracked_property_relationships
+#            select: coalesce({{user.Var("tracked_property_relationships_rs")}},{{user.Var("tracked_property_relationships_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: tracked_property_uprns
+#            select: coalesce({{user.Var("tracked_property_uprns_rs")}},{{user.Var("tracked_property_uprns_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: unregistered
+#            select: coalesce({{user.Var("unregistered_rs")}},{{user.Var("unregistered_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: user_property_status
+#            select: coalesce({{user.Var("user_property_status_rs")}},{{user.Var("user_property_status_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: user_status
+#            select: coalesce({{user.Var("user_status_rs")}},{{user.Var("user_status_seg")}})
+#            description:
+
+#        - entity_var:
+#            name: user_tracked_properties
+#            select: coalesce({{user.Var("user_tracked_properties_rs")}},{{user.Var("user_tracked_properties_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}' 
+#            description:
+
+#        - entity_var:
+#            name: user_tracked_properties_with_consent_and_estimate
+#            select: coalesce({{user.Var("user_tracked_properties_with_consent_and_estimate_rs")}},{{user.Var("user_tracked_properties_with_consent_and_estimate_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:
+
+#        - entity_var:
+#            name: user_tracked_properties_with_push_consent_and_estimate
+#            select: coalesce({{user.Var("user_tracked_properties_with_push_consent_and_estimate_rs")}},{{user.Var("user_tracked_properties_with_push_consent_and_estimate_seg")}})
+#            column_data_type: '{{warehouse.DataType("VARCHAR(65535)")}}'
+#            description:

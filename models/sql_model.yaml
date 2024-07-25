@@ -1,0 +1,672 @@
+- name: rap_arcklds_sql_model
+  model_type: sql_template
+  model_spec:
+    materialization:
+      output_type: table # view can also be used
+      run_type: discrete
+    single_sql: |
+      {% with rap_arcklds_view = this.DeRef("inputs/analytics_rudderstack_consumers_known_latest_day_snapshot") ids = this.DeRef("models/user_id_graph") %}
+        SELECT
+          column_varchar_1 as user_main_id,
+          column_varchar_2 as user_uuid,
+          column_varchar_3 as email_hash,
+          column_int_1 as days_since_last_activity_sql,
+          column_int_2 as days_since_last_search_sql,
+          column_int_3 as days_since_property_sold_sql,
+          column_int_4 as days_until_next_property_ownership_anniversary_sql,
+          column_varchar_4 as declared_buyer_segment_sql,
+          column_varchar_5 as declared_first_time_buyer_segment_sql,
+          column_varchar_6 as declared_homeowner_segment_sql,
+          column_varchar_7 as declared_investor_segment_sql,
+          column_varchar_8 as declared_owner_mover_segment_sql,
+          column_varchar_9 as declared_remortgager_segment_sql,
+          column_varchar_10 as declared_renter_segment_sql,
+          column_varchar_11 as declared_seller_prop_not_on_market_segment_sql,
+          column_varchar_12 as declared_seller_prop_on_market_segment_sql,
+          column_varchar_13 as declared_seller_segment_sql,
+          column_varchar_14 as derived_buyer_high_intent_segment_sql,
+          column_varchar_15 as derived_buyer_new_homes_high_intent_segment_sql,
+          column_varchar_16 as derived_buyer_new_homes_segment_sql,
+          column_varchar_17 as derived_buyer_recently_moved_segment_sql,
+          column_varchar_18 as derived_buyer_segment_sql,
+          column_varchar_19 as derived_downsizer_segment_sql,
+          column_varchar_20 as derived_first_time_buyer_sql,
+          column_varchar_21 as derived_owner_mover_segment_sql,
+          column_varchar_22 as derived_relocator_segment_sql,
+          column_varchar_23 as derived_remortgager_segment_sql,
+          column_varchar_24 as derived_renter_high_intent_segment_sql,
+          column_varchar_25 as derived_renter_recently_moved_segment_sql,
+          column_varchar_26 as derived_renter_segment_sql,
+          column_varchar_27 as derived_retiree_sql,
+          column_varchar_28 as derived_seller_high_intent_segment_sql,
+          column_varchar_29 as derived_seller_segment_sql,
+          column_varchar_30 as derived_shared_accommodator_sql,
+          column_varchar_31 as derived_upsizer_segment_sql,
+          column_varchar_32 as email_cta_01_sql,
+          column_varchar_33 as email_cta_02_sql,
+          column_varchar_34 as email_cta_03_sql,
+          column_varchar_35 as email_cta_04_sql,
+          column_varchar_36 as email_cta_05_sql,
+          column_varchar_37 as geo_intent_buyer_outcodes_3,
+          column_varchar_38 as geo_intent_buyer_outcodes_6,
+          column_varchar_39 as geo_intent_highest_outcode_3,
+          column_varchar_40 as geo_intent_highest_outcode_6,
+          column_varchar_41 as geo_intent_highest_outcode_score_3,
+          column_varchar_42 as geo_intent_highest_outcode_score_6,
+          column_varchar_43 as geo_intent_renter_highest_outcode_3,
+          column_varchar_44 as geo_intent_renter_highest_outcode_score_3,
+          column_varchar_45 as geo_intent_renter_outcodes_3,
+          column_int_5 as months_to_next_mortgage_end_date_sql,
+          column_timestamp_1 as next_mortgage_end_date_sql,
+          column_timestamp_2 as profiles_bdl_warehouse_snapshot_date,
+          column_timestamp_3 as profiles_last_updated_timestamp,
+          column_int_6 as app_visitor_2_years_sql,
+          column_float_1 as buyer_new_homes_intent_score_cumulative_distribution_sql,
+          column_int_7 as next_best_action_shown_30_day_count_app_download_sql,
+          column_int_8 as next_best_action_shown_30_day_count_for_sale_sql,
+          column_int_9 as next_best_action_shown_30_day_count_new_homes_sql,
+          column_int_10 as next_best_action_shown_30_day_count_property_insight_consent_sql,
+          column_int_11 as next_best_action_shown_30_day_count_remortgage_sql,
+          column_int_12 as next_best_action_shown_30_day_count_track_home_sql,
+          column_int_13 as vendor_lead_next_best_action_shown_30_day_count,
+          CASE WHEN column_int_14 > 0 THEN TRUE ELSE FALSE END as your_situation_skipped,
+          column_boolean_1 as next_best_action_email_marketing_consent,
+          column_boolean_2 as is_in_iterable_sql,
+          column_varchar_46 as ldp_last_viewed_listing_id,
+          column_timestamp_4 as situation_module_last_shown_at_dw,
+          column_int_15 as days_since_most_recent_landing_home_values_sql,
+          column_int_16 as days_since_most_recent_landing_house_prices_sql,
+          column_int_17 as days_since_most_recent_landing_pdp_sql,
+          column_varchar_47 as declared_seller_high_intent_segment_sql
+        FROM {{rap_arcklds_view}}
+        INNER JOIN {{ids}} ON {{rap_arcklds_view}}.column_varchar_2 = {{ids}}.other_id
+      {% endwith %}
+    ids:
+      - select: "column_varchar_2"  # user_uuid
+        type: user_id
+        entity: user
+      - select: "column_varchar_1"  # user_main_id
+        type: rudder_id
+        entity: user
+    features:
+      - name: email_hash
+      - name: days_since_last_activity_sql
+      - name: days_since_last_search_sql
+      - name: days_since_property_sold_sql
+      - name: days_until_next_property_ownership_anniversary_sql
+      - name: declared_buyer_segment_sql
+      - name: declared_first_time_buyer_segment_sql
+      - name: declared_homeowner_segment_sql
+      - name: declared_investor_segment_sql
+      - name: declared_owner_mover_segment_sql
+      - name: declared_remortgager_segment_sql
+      - name: declared_renter_segment_sql
+      - name: declared_seller_prop_not_on_market_segment_sql
+      - name: declared_seller_prop_on_market_segment_sql
+      - name: declared_seller_segment_sql
+      - name: derived_buyer_high_intent_segment_sql
+      - name: derived_buyer_new_homes_high_intent_segment_sql
+      - name: derived_buyer_new_homes_segment_sql
+      - name: derived_buyer_recently_moved_segment_sql
+      - name: derived_buyer_segment_sql
+      - name: derived_downsizer_segment_sql
+      - name: derived_first_time_buyer_sql
+      - name: derived_owner_mover_segment_sql
+      - name: derived_relocator_segment_sql
+      - name: derived_remortgager_segment_sql
+      - name: derived_renter_high_intent_segment_sql
+      - name: derived_renter_recently_moved_segment_sql
+      - name: derived_renter_segment_sql
+      - name: derived_retiree_sql
+      - name: derived_seller_high_intent_segment_sql
+      - name: derived_seller_segment_sql
+      - name: derived_shared_accommodator_sql
+      - name: derived_upsizer_segment_sql
+      - name: email_cta_01_sql
+      - name: email_cta_02_sql
+      - name: email_cta_03_sql
+      - name: email_cta_04_sql
+      - name: email_cta_05_sql
+      - name: geo_intent_buyer_outcodes_3
+      - name: geo_intent_buyer_outcodes_6
+      - name: geo_intent_highest_outcode_3
+      - name: geo_intent_highest_outcode_6
+      - name: geo_intent_highest_outcode_score_3
+      - name: geo_intent_highest_outcode_score_6
+      - name: geo_intent_renter_highest_outcode_3
+      - name: geo_intent_renter_highest_outcode_score_3
+      - name: geo_intent_renter_outcodes_3
+      - name: months_to_next_mortgage_end_date_sql
+      - name: next_mortgage_end_date_sql
+      - name: profiles_bdl_warehouse_snapshot_date
+      - name: profiles_last_updated_timestamp
+      - name: app_visitor_2_years_sql
+      - name: buyer_new_homes_intent_score_cumulative_distribution_sql
+      - name: next_best_action_shown_30_day_count_app_download_sql
+      - name: next_best_action_shown_30_day_count_for_sale_sql
+      - name: next_best_action_shown_30_day_count_new_homes_sql
+      - name: next_best_action_shown_30_day_count_property_insight_consent_sql
+      - name: next_best_action_shown_30_day_count_remortgage_sql
+      - name: next_best_action_shown_30_day_count_track_home_sql
+      - name: vendor_lead_next_best_action_shown_30_day_count
+      - name: your_situation_skipped
+      - name: next_best_action_email_marketing_consent
+      - name: is_in_iterable_sql
+      - name: ldp_last_viewed_listing_id
+      - name: days_since_most_recent_landing_home_values_sql
+      - name: days_since_most_recent_landing_house_prices_sql
+      - name: days_since_most_recent_landing_pdp_sql 
+      - name: declared_seller_high_intent_segment_sql
+    contract:
+      is_optional: false
+      is_event_stream: false
+      with_entity_ids:
+        - user
+      with_columns:
+        - name: email_hash
+        - name: days_since_last_activity_sql
+        - name: days_since_last_search_sql
+        - name: days_since_property_sold_sql
+        - name: days_until_next_property_ownership_anniversary_sql
+        - name: declared_buyer_segment_sql
+        - name: declared_first_time_buyer_segment_sql
+        - name: declared_homeowner_segment_sql
+        - name: declared_investor_segment_sql
+        - name: declared_owner_mover_segment_sql
+        - name: declared_remortgager_segment_sql
+        - name: declared_renter_segment_sql
+        - name: declared_seller_prop_not_on_market_segment_sql
+        - name: declared_seller_prop_on_market_segment_sql
+        - name: declared_seller_segment_sql
+        - name: derived_buyer_high_intent_segment_sql
+        - name: derived_buyer_new_homes_high_intent_segment_sql
+        - name: derived_buyer_new_homes_segment_sql
+        - name: derived_buyer_recently_moved_segment_sql
+        - name: derived_buyer_segment_sql
+        - name: derived_downsizer_segment_sql
+        - name: derived_first_time_buyer_sql
+        - name: derived_owner_mover_segment_sql
+        - name: derived_relocator_segment_sql
+        - name: derived_remortgager_segment_sql
+        - name: derived_renter_high_intent_segment_sql
+        - name: derived_renter_recently_moved_segment_sql
+        - name: derived_renter_segment_sql
+        - name: derived_retiree_sql
+        - name: derived_seller_high_intent_segment_sql
+        - name: derived_seller_segment_sql
+        - name: derived_shared_accommodator_sql
+        - name: derived_upsizer_segment_sql
+        - name: email_cta_01_sql
+        - name: email_cta_02_sql
+        - name: email_cta_03_sql
+        - name: email_cta_04_sql
+        - name: email_cta_05_sql
+        - name: geo_intent_buyer_outcodes_3
+        - name: geo_intent_buyer_outcodes_6
+        - name: geo_intent_highest_outcode_3
+        - name: geo_intent_highest_outcode_6
+        - name: geo_intent_highest_outcode_score_3
+        - name: geo_intent_highest_outcode_score_6
+        - name: geo_intent_renter_highest_outcode_3
+        - name: geo_intent_renter_highest_outcode_score_3
+        - name: geo_intent_renter_outcodes_3
+        - name: months_to_next_mortgage_end_date_sql
+        - name: next_mortgage_end_date_sql
+        - name: profiles_bdl_warehouse_snapshot_date
+        - name: profiles_last_updated_timestamp
+        - name: app_visitor_2_years_sql
+        - name: buyer_new_homes_intent_score_cumulative_distribution_sql
+        - name: next_best_action_shown_30_day_count_app_download_sql
+        - name: next_best_action_shown_30_day_count_for_sale_sql
+        - name: next_best_action_shown_30_day_count_new_homes_sql
+        - name: next_best_action_shown_30_day_count_property_insight_consent_sql
+        - name: next_best_action_shown_30_day_count_remortgage_sql
+        - name: next_best_action_shown_30_day_count_track_home_sql
+        - name: vendor_lead_next_best_action_shown_30_day_count
+        - name: your_situation_skipped
+        - name: next_best_action_email_marketing_consent
+        - name: is_in_iterable_sql
+        - name: ldp_last_viewed_listing_id
+        - name: days_since_most_recent_landing_home_values_sql
+        - name: days_since_most_recent_landing_house_prices_sql
+        - name: days_since_most_recent_landing_pdp_sql 
+        - name: declared_seller_high_intent_segment_sql
+- name: segment_ues_sql
+  model_type: sql_template
+  model_spec:
+    materialization:
+      output_type: table
+      run_type: discrete
+    single_sql: |
+      {% with seg_ues = this.DeRef("inputs/segment_ues_users") ids = this.DeRef("models/user_id_graph") %}
+        SELECT
+          column_varchar_1 as user_main_id,
+          any_value(column_varchar_2) as id,
+          any_value(column_int_1) as count_active_listing_alert_seg,
+          any_value(column_int_2) as count_active_saved_search_seg,
+          any_value(column_int_3) as count_homeowner_tracked_property_local_area_updates_email_consent_seg,
+          any_value(column_int_4) as count_homeowner_tracked_property_seg,
+          any_value(column_int_5) as count_homeowner_tracked_property_updates_email_consent_seg,
+          any_value(column_int_6) as count_tracked_property_local_area_updates_email_consent_seg,
+          any_value(column_int_7) as count_tracked_property_local_area_updates_push_consent_seg,
+          any_value(column_int_8) as count_tracked_property_seg,
+          any_value(column_int_9) as count_tracked_property_updates_email_consent_seg,
+          any_value(column_int_10) as count_tracked_property_updates_push_consent_seg,
+          any_value(column_timestamp_1) as created_at_seg,
+          any_value(column_varchar_3) as homeowner_tracked_property_local_area_updates_email_consent_uprns_seg,
+          any_value(column_varchar_4) as homeowner_tracked_property_updates_email_consent_uprns_seg,
+          any_value(column_varchar_5) as homeowner_tracked_property_uprns_seg,
+          any_value(column_varchar_6) as last_homeowner_tracked_property_address_seg,
+          any_value(column_timestamp_2) as last_homeowner_tracked_property_sold_date_seg,
+          any_value(column_varchar_7) as last_homeowner_tracked_property_sold_price_seg,
+          any_value(column_timestamp_3) as last_homeowner_tracked_property_timestamp_seg,
+          any_value(column_varchar_8) as last_homeowner_tracked_property_uprn_seg,
+          any_value(column_varchar_9) as last_landlord_tracked_property_address_seg,
+          any_value(column_timestamp_4) as last_landlord_tracked_property_sold_date_seg,
+          any_value(column_varchar_10) as last_landlord_tracked_property_sold_price_seg,
+          any_value(column_timestamp_5) as last_landlord_tracked_property_timestamp_seg,
+          any_value(column_varchar_11) as last_landlord_tracked_property_uprn_seg,
+          any_value(column_timestamp_6) as last_listing_alert_updated_timestamp_seg,
+          any_value(column_timestamp_7) as last_other_tracked_property_timestamp_seg,
+          any_value(column_timestamp_8) as last_saved_search_updated_timestamp_seg,
+          any_value(column_timestamp_9) as last_tracked_property_timestamp_seg,
+          any_value(column_timestamp_10) as last_tracked_property_updated_timestamp_seg,
+          any_value(column_varchar_12) as last_tracked_property_uprn_seg,
+          any_value(column_boolean_1) as marketing_consent_new_homes_seg,
+          any_value(column_boolean_2) as marketing_consent_news_seg,
+          any_value(column_boolean_3) as marketing_consent_offers_seg,
+          any_value(column_varchar_13) as situation_are_you_a_first_time_buyer_seg,
+          any_value(column_timestamp_11) as situation_are_you_a_first_time_buyer_updated_at_seg,
+          any_value(column_varchar_14) as situation_are_you_a_homeowner_seg,
+          any_value(column_timestamp_12) as situation_are_you_a_homeowner_updated_at_seg,
+          any_value(column_varchar_15) as situation_are_you_a_property_investor_seg,
+          any_value(column_timestamp_13) as situation_are_you_a_property_investor_updated_at_seg,
+          any_value(column_varchar_16) as situation_are_you_looking_to_buy_seg,
+          any_value(column_timestamp_14) as situation_are_you_looking_to_buy_updated_at_seg,
+          any_value(column_varchar_17) as situation_are_you_selling_a_property_seg,
+          any_value(column_timestamp_15) as situation_are_you_selling_a_property_updated_at_seg,
+          any_value(column_varchar_18) as situation_do_you_have_a_mortgage_seg,
+          any_value(column_timestamp_16) as situation_do_you_have_a_mortgage_updated_at_seg,
+          any_value(column_varchar_19) as situation_is_it_already_on_the_market_seg,
+          any_value(column_timestamp_17) as situation_is_it_already_on_the_market_updated_at_seg,
+          any_value(column_timestamp_18) as situation_last_updated_at_seg,
+          any_value(column_varchar_20) as situation_what_is_your_current_property_goal_seg,
+          any_value(column_timestamp_19) as situation_what_is_your_current_property_goal_updated_at_seg,
+          any_value(column_varchar_21) as situation_when_does_your_current_mortgage_rate_expire_seg,
+          any_value(column_timestamp_20) as situation_when_does_your_current_mortgage_rate_expire_updated_at_seg,
+          any_value(column_varchar_22) as tracked_property_relationships_seg,
+          any_value(column_varchar_23) as tracked_property_uprns_seg,
+          any_value(column_varchar_24) as unregistered_seg,
+          any_value(column_varchar_25) as user_property_status_seg,
+          any_value(column_varchar_26) as user_status_seg,
+          any_value(column_varchar_27) as user_tracked_properties_seg,
+          any_value(column_varchar_28) as user_tracked_properties_with_consent_and_estimate_seg,
+          any_value(column_varchar_29) as user_tracked_properties_with_push_consent_and_estimate_seg
+        FROM {{seg_ues}}
+        INNER JOIN {{ids}} ON {{seg_ues}}.column_varchar_2 = {{ids}}.other_id
+        GROUP BY column_varchar_1
+      {% endwith %}
+    ids:
+      - select: "column_varchar_2"  # id
+        type: user_id
+        entity: user
+      - select: "column_varchar_1"  # user_main_id
+        type: rudder_id
+        entity: user
+- name: rudderstack_ues_sql
+  model_type: sql_template
+  model_spec:
+    materialization:
+      output_type: table
+      run_type: discrete
+    single_sql: |
+      {% with rs_ues = this.DeRef("inputs/rudderstack_ues_idenitifies") ids = this.DeRef("models/user_id_graph") %}
+        SELECT
+          column_varchar_1 as user_main_id,
+          any_value(column_varchar_2) AS user_id,
+          any_value(column_int_1) as count_active_listing_alert_rs,
+          any_value(column_int_2) as count_active_saved_search_rs,
+          any_value(column_int_3) as count_homeowner_tracked_property_local_area_updates_email_consent_rs,
+          any_value(column_int_4) as count_homeowner_tracked_property_rs,
+          any_value(column_int_5) as count_homeowner_tracked_property_updates_email_consent_rs,
+          any_value(column_int_6) as count_tracked_property_local_area_updates_email_consent_rs,
+          any_value(column_int_7) as count_tracked_property_local_area_updates_push_consent_rs,
+          any_value(column_int_8) as count_tracked_property_rs,
+          any_value(column_int_9) as count_tracked_property_updates_email_consent_rs,
+          any_value(column_int_10) as count_tracked_property_updates_push_consent_rs,
+          any_value(column_timestamp_1) as created_at_rs,
+          any_value(column_varchar_3) as homeowner_tracked_property_local_area_updates_email_consent_uprns_rs,
+          any_value(column_varchar_4) as homeowner_tracked_property_updates_email_consent_uprns_rs,
+          any_value(column_varchar_5) as homeowner_tracked_property_uprns_rs,
+          any_value(column_varchar_6) as last_homeowner_tracked_property_address_rs,
+          any_value(column_timestamp_2) as last_homeowner_tracked_property_sold_date_rs,
+          any_value(column_varchar_7) as last_homeowner_tracked_property_sold_price_rs,
+          any_value(column_timestamp_3) as last_homeowner_tracked_property_timestamp_rs,
+          any_value(column_varchar_8) as last_homeowner_tracked_property_uprn_rs,
+          any_value(column_varchar_9) as last_landlord_tracked_property_address_rs,
+          any_value(column_timestamp_4) as last_landlord_tracked_property_sold_date_rs,
+          any_value(column_varchar_10) as last_landlord_tracked_property_sold_price_rs,
+          any_value(column_timestamp_5) as last_landlord_tracked_property_timestamp_rs,
+          any_value(column_varchar_11) as last_landlord_tracked_property_uprn_rs,
+          any_value(column_timestamp_6) as last_listing_alert_updated_timestamp_rs,
+          any_value(column_timestamp_7) as last_other_tracked_property_timestamp_rs,
+          any_value(column_timestamp_8) as last_saved_search_updated_timestamp_rs,
+          any_value(column_timestamp_9) as last_tracked_property_timestamp_rs,
+          any_value(column_timestamp_10) as last_tracked_property_updated_timestamp_rs,
+          any_value(column_varchar_12) as last_tracked_property_uprn_rs,
+          any_value(column_boolean_1) as marketing_consent_new_homes_rs,
+          any_value(column_boolean_2) as marketing_consent_news_rs,
+          any_value(column_boolean_3) as marketing_consent_offers_rs,
+          any_value(column_varchar_13) as situation_are_you_a_first_time_buyer_rs,
+          any_value(column_timestamp_11) as situation_are_you_a_first_time_buyer_updated_at_rs,
+          any_value(column_varchar_14) as situation_are_you_a_homeowner_rs,
+          any_value(column_timestamp_12) as situation_are_you_a_homeowner_updated_at_rs,
+          any_value(column_varchar_15) as situation_are_you_a_property_investor_rs,
+          any_value(column_timestamp_13) as situation_are_you_a_property_investor_updated_at_rs,
+          any_value(column_varchar_16) as situation_are_you_looking_to_buy_rs,
+          any_value(column_timestamp_14) as situation_are_you_looking_to_buy_updated_at_rs,
+          any_value(column_varchar_17) as situation_are_you_selling_a_property_rs,
+          any_value(column_timestamp_15) as situation_are_you_selling_a_property_updated_at_rs,
+          any_value(column_varchar_18) as situation_do_you_have_a_mortgage_rs,
+          any_value(column_timestamp_16) as situation_do_you_have_a_mortgage_updated_at_rs,
+          any_value(column_varchar_19) as situation_is_it_already_on_the_market_rs,
+          any_value(column_timestamp_17) as situation_is_it_already_on_the_market_updated_at_rs,
+          any_value(column_timestamp_18) as situation_last_updated_at_rs,
+          any_value(column_varchar_20) as situation_what_is_your_current_property_goal_rs,
+          any_value(column_timestamp_19) as situation_what_is_your_current_property_goal_updated_at_rs,
+          any_value(column_varchar_21) as situation_when_does_your_current_mortgage_rate_expire_rs,
+          any_value(column_timestamp_20) as situation_when_does_your_current_mortgage_rate_expire_updated_at_rs,
+          any_value(column_varchar_22) as tracked_property_relationships_rs,
+          any_value(column_varchar_23) as tracked_property_uprns_rs,
+          any_value(column_varchar_24) as unregistered_rs,
+          any_value(column_varchar_25) as user_property_status_rs,
+          any_value(column_varchar_26) as user_status_rs,
+          any_value(column_varchar_27) as user_tracked_properties_rs,
+          any_value(column_varchar_28) as user_tracked_properties_with_consent_and_estimate_rs,
+          any_value(column_varchar_29) as user_tracked_properties_with_push_consent_and_estimate_rs
+        FROM (
+          SELECT
+            column_varchar_2,
+            column_varchar_1,
+            first_value(column_int_1 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_active_listing_alert_rs,
+            first_value(column_int_2 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_active_saved_search_rs,
+            first_value(column_int_3 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_homeowner_tracked_property_local_area_updates_email_consent_rs,
+            first_value(column_int_4 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_homeowner_tracked_property_rs,
+            first_value(column_int_5 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_homeowner_tracked_property_updates_email_consent_rs,
+            first_value(column_int_6 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_tracked_property_local_area_updates_email_consent_rs,
+            first_value(column_int_7 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_tracked_property_local_area_updates_push_consent_rs,
+            first_value(column_int_8 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_tracked_property_rs,
+            first_value(column_int_9 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_tracked_property_updates_email_consent_rs,
+            first_value(column_int_10 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS count_tracked_property_updates_push_consent_rs,
+            first_value(column_timestamp_1 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS created_at_rs,
+            first_value(column_varchar_3 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS homeowner_tracked_property_local_area_updates_email_consent_uprns_rs,
+            first_value(column_varchar_4 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS homeowner_tracked_property_updates_email_consent_uprns_rs,
+            first_value(column_varchar_5 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS homeowner_tracked_property_uprns_rs,
+            first_value(column_varchar_6 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_homeowner_tracked_property_address_rs,
+            first_value(column_timestamp_2 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_homeowner_tracked_property_sold_date_rs,
+            first_value(column_varchar_7 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_homeowner_tracked_property_sold_price_rs,
+            first_value(column_timestamp_3 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_homeowner_tracked_property_timestamp_rs,
+            first_value(column_varchar_8 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_homeowner_tracked_property_uprn_rs,
+            first_value(column_varchar_9 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_landlord_tracked_property_address_rs,
+            first_value(column_timestamp_4 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_landlord_tracked_property_sold_date_rs,
+            first_value(column_varchar_10 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_landlord_tracked_property_sold_price_rs,
+            first_value(column_timestamp_5 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_landlord_tracked_property_timestamp_rs,
+            first_value(column_varchar_11 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_landlord_tracked_property_uprn_rs,
+            first_value(column_timestamp_6 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_listing_alert_updated_timestamp_rs,
+            first_value(column_timestamp_7 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_other_tracked_property_timestamp_rs,
+            first_value(column_timestamp_8 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_saved_search_updated_timestamp_rs,
+            first_value(column_timestamp_9 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_tracked_property_timestamp_rs,
+            first_value(column_timestamp_10 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_tracked_property_updated_timestamp_rs,
+            first_value(column_varchar_12 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_tracked_property_uprn_rs,
+            first_value(column_boolean_1 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS marketing_consent_new_homes_rs,
+            first_value(column_boolean_2 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS marketing_consent_news_rs,
+            first_value(column_boolean_3 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS marketing_consent_offers_rs,
+            first_value(column_varchar_13 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_first_time_buyer_rs,
+            first_value(column_timestamp_11 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_first_time_buyer_updated_at_rs,
+            first_value(column_varchar_14 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_homeowner_rs,
+            first_value(column_timestamp_12 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_homeowner_updated_at_rs,
+            first_value(column_varchar_15 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_property_investor_rs,
+            first_value(column_timestamp_13 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_a_property_investor_updated_at_rs,
+            first_value(column_varchar_16 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_looking_to_buy_rs,
+            first_value(column_timestamp_14 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_looking_to_buy_updated_at_rs,
+            first_value(column_varchar_17 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_selling_a_property_rs,
+            first_value(column_timestamp_15 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_are_you_selling_a_property_updated_at_rs,
+            first_value(column_varchar_18 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_do_you_have_a_mortgage_rs,
+            first_value(column_timestamp_16 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_do_you_have_a_mortgage_updated_at_rs,
+            first_value(column_varchar_19 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_is_it_already_on_the_market_rs,
+            first_value(column_timestamp_17 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_is_it_already_on_the_market_updated_at_rs,
+            first_value(column_timestamp_18 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_last_updated_at_rs,
+            first_value(column_varchar_20 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_what_is_your_current_property_goal_rs,
+            first_value(column_timestamp_19 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_what_is_your_current_property_goal_updated_at_rs,
+            first_value(column_varchar_21 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_when_does_your_current_mortgage_rate_expire_rs,
+            first_value(column_timestamp_20 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS situation_when_does_your_current_mortgage_rate_expire_updated_at_rs,
+            first_value(column_varchar_22 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS tracked_property_relationships_rs,
+            first_value(column_varchar_23 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS tracked_property_uprns_rs,
+            first_value(column_varchar_24 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS unregistered_rs,
+            first_value(column_varchar_25 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_property_status_rs,
+            first_value(column_varchar_26 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_status_rs,
+            first_value(column_varchar_27 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_tracked_properties_rs,
+            first_value(column_varchar_28 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_tracked_properties_with_consent_and_estimate_rs,
+            first_value(column_varchar_29 IGNORE NULLS) OVER (PARTITION BY column_varchar_2 ORDER BY _timestamp DESC ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS user_tracked_properties_with_push_consent_and_estimate_rs
+          FROM
+            {{rs_ues}}
+            INNER JOIN {{ids}} ON {{rs_ues}}.column_varchar_2 = {{ids}}.other_id
+        ) as ranked_features
+        GROUP BY column_varchar_1
+      {% endwith %}
+    ids:
+      - select: "column_varchar_2"  # user_id
+        type: user_id
+        entity: user
+      - select: "column_varchar_1"  # user_main_id
+        type: rudder_id
+        entity: user
+- name: seg_rs_computed_sql
+  model_type: sql_template
+  model_spec:
+    materialization:
+      output_type: table
+      run_type: discrete
+    single_sql: |
+      {% with seg_ues = this.DeRef("models/segment_ues_sql") rs_ues = this.DeRef("models/rudderstack_ues_sql") %}
+        SELECT
+          coalesce(rs_ues.column_varchar_1,seg_ues.column_varchar_1) as user_main_id,
+          coalesce(rs_ues.column_varchar_2,seg_ues.column_varchar_2) as user_id,
+          coalesce(rs_ues.count_active_listing_alert_rs, seg_ues.count_active_listing_alert_seg) as count_active_listing_alert,
+          coalesce(rs_ues.count_active_saved_search_rs, seg_ues.count_active_saved_search_seg) as count_active_saved_search,
+          coalesce(rs_ues.count_homeowner_tracked_property_rs, seg_ues.count_homeowner_tracked_property_seg) as count_homeowner_tracked_property,
+          coalesce(rs_ues.count_homeowner_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_local_area_updates_email_consent_seg) as count_homeowner_tracked_property_local_area_updates_email_consent,
+          coalesce(rs_ues.count_homeowner_tracked_property_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_updates_email_consent_seg) as count_homeowner_tracked_property_updates_email_consent,
+          coalesce(rs_ues.count_tracked_property_rs, seg_ues.count_tracked_property_seg) as count_tracked_property,
+          coalesce(rs_ues.count_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_tracked_property_local_area_updates_email_consent_seg) as count_tracked_property_local_area_updates_email_consent,
+          coalesce(rs_ues.count_tracked_property_local_area_updates_push_consent_rs, seg_ues.count_tracked_property_local_area_updates_push_consent_seg) as count_tracked_property_local_area_updates_push_consent,
+          coalesce(rs_ues.count_tracked_property_updates_email_consent_rs, seg_ues.count_tracked_property_updates_email_consent_seg) as count_tracked_property_updates_email_consent,
+          coalesce(rs_ues.count_tracked_property_updates_push_consent_rs, seg_ues.count_tracked_property_updates_push_consent_seg) as count_tracked_property_updates_push_consent,
+          to_char(coalesce(rs_ues.created_at_rs, seg_ues.created_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as created_at,
+          coalesce(rs_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_seg) as homeowner_tracked_property_local_area_updates_email_consent_uprns,
+          coalesce(rs_ues.homeowner_tracked_property_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_updates_email_consent_uprns_seg) as homeowner_tracked_property_updates_email_consent_uprns,
+          coalesce(rs_ues.homeowner_tracked_property_uprns_rs, seg_ues.homeowner_tracked_property_uprns_seg) as homeowner_tracked_property_uprns,
+          coalesce(rs_ues.last_homeowner_tracked_property_address_rs, seg_ues.last_homeowner_tracked_property_address_seg) as last_homeowner_tracked_property_address,         
+          to_char(coalesce(rs_ues.last_homeowner_tracked_property_sold_date_rs, seg_ues.last_homeowner_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_sold_date,            
+          coalesce(rs_ues.last_homeowner_tracked_property_sold_price_rs, seg_ues.last_homeowner_tracked_property_sold_price_seg) as last_homeowner_tracked_property_sold_price,           
+          to_char(coalesce(rs_ues.last_homeowner_tracked_property_timestamp_rs, seg_ues.last_homeowner_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_timestamp,
+          coalesce(rs_ues.last_homeowner_tracked_property_uprn_rs, seg_ues.last_homeowner_tracked_property_uprn_seg) as last_homeowner_tracked_property_uprn,
+          coalesce(rs_ues.last_landlord_tracked_property_address_rs, seg_ues.last_landlord_tracked_property_address_seg) as last_landlord_tracked_property_address,
+          to_char(coalesce(rs_ues.last_landlord_tracked_property_sold_date_rs, seg_ues.last_landlord_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_sold_date,
+          coalesce(rs_ues.last_landlord_tracked_property_sold_price_rs, seg_ues.last_landlord_tracked_property_sold_price_seg) as last_landlord_tracked_property_sold_price,
+          to_char(coalesce(rs_ues.last_landlord_tracked_property_timestamp_rs, seg_ues.last_landlord_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_timestamp,
+          coalesce(rs_ues.last_landlord_tracked_property_uprn_rs, seg_ues.last_landlord_tracked_property_uprn_seg) as last_landlord_tracked_property_uprn,
+          to_char(coalesce(rs_ues.last_listing_alert_updated_timestamp_rs, seg_ues.last_listing_alert_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_listing_alert_updated_timestamp,          
+          to_char(coalesce(rs_ues.last_other_tracked_property_timestamp_rs, seg_ues.last_other_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_other_tracked_property_timestamp,           
+          to_char(coalesce(rs_ues.last_saved_search_updated_timestamp_rs, seg_ues.last_saved_search_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_saved_search_updated_timestamp,           
+          to_char(coalesce(rs_ues.last_tracked_property_timestamp_rs, seg_ues.last_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_timestamp,         
+          to_char(coalesce(rs_ues.last_tracked_property_updated_timestamp_rs, seg_ues.last_tracked_property_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_updated_timestamp,         
+          coalesce(rs_ues.last_tracked_property_uprn_rs, seg_ues.last_tracked_property_uprn_seg) as last_tracked_property_uprn,
+          coalesce(rs_ues.marketing_consent_new_homes_rs, seg_ues.marketing_consent_new_homes_seg) as marketing_consent_new_homes,
+          coalesce(rs_ues.marketing_consent_news_rs, seg_ues.marketing_consent_news_seg) as marketing_consent_news,
+          coalesce(rs_ues.marketing_consent_offers_rs, seg_ues.marketing_consent_offers_seg) as marketing_consent_offers,
+          coalesce(rs_ues.situation_are_you_a_first_time_buyer_rs, seg_ues.situation_are_you_a_first_time_buyer_seg) as situation_are_you_a_first_time_buyer,           
+          to_char(coalesce(rs_ues.situation_are_you_a_first_time_buyer_updated_at_rs, seg_ues.situation_are_you_a_first_time_buyer_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_first_time_buyer_updated_at,           
+          coalesce(rs_ues.situation_are_you_a_homeowner_rs, seg_ues.situation_are_you_a_homeowner_seg) as situation_are_you_a_homeowner,          
+          to_char(coalesce(rs_ues.situation_are_you_a_homeowner_updated_at_rs, seg_ues.situation_are_you_a_homeowner_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_homeowner_updated_at,          
+          coalesce(rs_ues.situation_are_you_a_property_investor_rs, seg_ues.situation_are_you_a_property_investor_seg) as situation_are_you_a_property_investor,          
+          to_char(coalesce(rs_ues.situation_are_you_a_property_investor_updated_at_rs, seg_ues.situation_are_you_a_property_investor_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_property_investor_updated_at,         
+          coalesce(rs_ues.situation_are_you_looking_to_buy_rs, seg_ues.situation_are_you_looking_to_buy_seg) as situation_are_you_looking_to_buy,           
+          to_char(coalesce(rs_ues.situation_are_you_looking_to_buy_updated_at_rs, seg_ues.situation_are_you_looking_to_buy_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_looking_to_buy_updated_at,         
+          coalesce(rs_ues.situation_are_you_selling_a_property_rs, seg_ues.situation_are_you_selling_a_property_seg) as situation_are_you_selling_a_property,           
+          to_char(coalesce(rs_ues.situation_are_you_selling_a_property_updated_at_rs, seg_ues.situation_are_you_selling_a_property_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_selling_a_property_updated_at,         
+          coalesce(rs_ues.situation_do_you_have_a_mortgage_rs, seg_ues.situation_do_you_have_a_mortgage_seg) as situation_do_you_have_a_mortgage,         
+          to_char(coalesce(rs_ues.situation_do_you_have_a_mortgage_updated_at_rs, seg_ues.situation_do_you_have_a_mortgage_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_do_you_have_a_mortgage_updated_at,         
+          coalesce(rs_ues.situation_is_it_already_on_the_market_rs, seg_ues.situation_is_it_already_on_the_market_seg) as situation_is_it_already_on_the_market,          
+          to_char(coalesce(rs_ues.situation_is_it_already_on_the_market_updated_at_rs, seg_ues.situation_is_it_already_on_the_market_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_is_it_already_on_the_market_updated_at,         
+          to_char(coalesce(rs_ues.situation_last_updated_at_rs, seg_ues.situation_last_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_last_updated_at,        
+          coalesce(rs_ues.situation_what_is_your_current_property_goal_rs, seg_ues.situation_what_is_your_current_property_goal_seg) as situation_what_is_your_current_property_goal,          
+          to_char(coalesce(rs_ues.situation_what_is_your_current_property_goal_updated_at_rs, seg_ues.situation_what_is_your_current_property_goal_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_what_is_your_current_property_goal_updated_at,         
+          coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_seg) as situation_when_does_your_current_mortgage_rate_expire,          
+          to_char(coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_when_does_your_current_mortgage_rate_expire_updated_at,          
+          coalesce(rs_ues.tracked_property_relationships_rs, seg_ues.tracked_property_relationships_seg) as tracked_property_relationships,
+          coalesce(rs_ues.tracked_property_uprns_rs, seg_ues.tracked_property_uprns_seg) as tracked_property_uprns,
+          coalesce(rs_ues.unregistered_rs, seg_ues.unregistered_seg) as unregistered,
+          coalesce(rs_ues.user_property_status_rs, seg_ues.user_property_status_seg) as user_property_status,
+          coalesce(rs_ues.user_status_rs, seg_ues.user_status_seg) as user_status,
+          coalesce(rs_ues.user_tracked_properties_rs, seg_ues.user_tracked_properties_seg) as user_tracked_properties,
+          coalesce(rs_ues.user_tracked_properties_with_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_consent_and_estimate_seg) as user_tracked_properties_with_consent_and_estimate,
+          coalesce(rs_ues.user_tracked_properties_with_push_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_push_consent_and_estimate_seg) as user_tracked_properties_with_push_consent_and_estimate
+        FROM {{rs_ues}} as rs_ues
+        FULL OUTER JOIN {{seg_ues}} as seg_ues
+        ON rs_ues.column_varchar_1 = seg_ues.column_varchar_1
+      {% endwith %}
+    ids:
+      - select: "column_varchar_2"  # user_id
+        type: user_id
+        entity: user
+      - select: "column_varchar_1"  # user_main_id
+        type: rudder_id
+        entity: user
+    features:
+      - name: count_active_listing_alert
+      - name: count_active_saved_search
+      - name: count_homeowner_tracked_property
+      - name: count_homeowner_tracked_property_local_area_updates_email_consent
+      - name: count_homeowner_tracked_property_updates_email_consent
+      - name: count_tracked_property
+      - name: count_tracked_property_local_area_updates_email_consent
+      - name: count_tracked_property_local_area_updates_push_consent
+      - name: count_tracked_property_updates_email_consent
+      - name: count_tracked_property_updates_push_consent
+      - name: created_at
+      - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
+      - name: homeowner_tracked_property_updates_email_consent_uprns
+      - name: homeowner_tracked_property_uprns
+      - name: last_homeowner_tracked_property_address
+      - name: last_homeowner_tracked_property_sold_date
+      - name: last_homeowner_tracked_property_sold_price
+      - name: last_homeowner_tracked_property_timestamp
+      - name: last_homeowner_tracked_property_uprn
+      - name: last_landlord_tracked_property_address
+      - name: last_landlord_tracked_property_sold_date
+      - name: last_landlord_tracked_property_sold_price
+      - name: last_landlord_tracked_property_timestamp
+      - name: last_landlord_tracked_property_uprn
+      - name: last_listing_alert_updated_timestamp
+      - name: last_other_tracked_property_timestamp
+      - name: last_saved_search_updated_timestamp
+      - name: last_tracked_property_timestamp
+      - name: last_tracked_property_updated_timestamp
+      - name: last_tracked_property_uprn
+      - name: marketing_consent_new_homes
+      - name: marketing_consent_news
+      - name: marketing_consent_offers
+      - name: situation_are_you_a_first_time_buyer
+      - name: situation_are_you_a_first_time_buyer_updated_at
+      - name: situation_are_you_a_homeowner
+      - name: situation_are_you_a_homeowner_updated_at
+      - name: situation_are_you_a_property_investor
+      - name: situation_are_you_a_property_investor_updated_at
+      - name: situation_are_you_looking_to_buy
+      - name: situation_are_you_looking_to_buy_updated_at
+      - name: situation_are_you_selling_a_property
+      - name: situation_are_you_selling_a_property_updated_at
+      - name: situation_do_you_have_a_mortgage
+      - name: situation_do_you_have_a_mortgage_updated_at
+      - name: situation_is_it_already_on_the_market
+      - name: situation_is_it_already_on_the_market_updated_at
+      - name: situation_last_updated_at
+      - name: situation_what_is_your_current_property_goal
+      - name: situation_what_is_your_current_property_goal_updated_at
+      - name: situation_when_does_your_current_mortgage_rate_expire
+      - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
+      - name: tracked_property_relationships
+      - name: tracked_property_uprns
+      - name: unregistered
+      - name: user_property_status
+      - name: user_status
+      - name: user_tracked_properties
+      - name: user_tracked_properties_with_consent_and_estimate
+      - name: user_tracked_properties_with_push_consent_and_estimate
+    contract:
+      is_optional: false
+      is_event_stream: false
+      with_entity_ids:
+        - user
+      with_columns:
+        - name: count_active_listing_alert
+        - name: count_active_saved_search
+        - name: count_homeowner_tracked_property
+        - name: count_homeowner_tracked_property_local_area_updates_email_consent
+        - name: count_homeowner_tracked_property_updates_email_consent
+        - name: count_tracked_property
+        - name: count_tracked_property_local_area_updates_email_consent
+        - name: count_tracked_property_local_area_updates_push_consent
+        - name: count_tracked_property_updates_email_consent
+        - name: count_tracked_property_updates_push_consent
+        - name: created_at
+        - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
+        - name: homeowner_tracked_property_updates_email_consent_uprns
+        - name: homeowner_tracked_property_uprns
+        - name: last_homeowner_tracked_property_address
+        - name: last_homeowner_tracked_property_sold_date
+        - name: last_homeowner_tracked_property_sold_price
+        - name: last_homeowner_tracked_property_timestamp
+        - name: last_homeowner_tracked_property_uprn
+        - name: last_landlord_tracked_property_address
+        - name: last_landlord_tracked_property_sold_date
+        - name: last_landlord_tracked_property_sold_price
+        - name: last_landlord_tracked_property_timestamp
+        - name: last_landlord_tracked_property_uprn
+        - name: last_listing_alert_updated_timestamp
+        - name: last_other_tracked_property_timestamp
+        - name: last_saved_search_updated_timestamp
+        - name: last_tracked_property_timestamp
+        - name: last_tracked_property_updated_timestamp
+        - name: last_tracked_property_uprn
+        - name: marketing_consent_new_homes
+        - name: marketing_consent_news
+        - name: marketing_consent_offers
+        - name: situation_are_you_a_first_time_buyer
+        - name: situation_are_you_a_first_time_buyer_updated_at
+        - name: situation_are_you_a_homeowner
+        - name: situation_are_you_a_homeowner_updated_at
+        - name: situation_are_you_a_property_investor
+        - name: situation_are_you_a_property_investor_updated_at
+        - name: situation_are_you_looking_to_buy
+        - name: situation_are_you_looking_to_buy_updated_at
+        - name: situation_are_you_selling_a_property
+        - name: situation_are_you_selling_a_property_updated_at
+        - name: situation_do_you_have_a_mortgage
+        - name: situation_do_you_have_a_mortgage_updated_at
+        - name: situation_is_it_already_on_the_market
+        - name: situation_is_it_already_on_the_market_updated_at
+        - name: situation_last_updated_at
+        - name: situation_what_is_your_current_property_goal
+        - name: situation_what_is_your_current_property_goal_updated_at
+        - name: situation_when_does_your_current_mortgage_rate_expire
+        - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
+        - name: tracked_property_relationships
+        - name: tracked_property_uprns
+        - name: unregistered
+        - name: user_property_status
+        - name: user_status
+        - name: user_tracked_properties
+        - name: user_tracked_properties_with_consent_and_estimate
+        - name: user_tracked_properties_with_push_consent_and_estimate
