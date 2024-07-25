@@ -37,7 +37,7 @@ inputs:
         - user
       with_columns: []
     app_defaults:
-      table: rs360_simulated_data.rudderstack_ues_identifies
+      table: rs360_simulated_data.rudderstack_ues_idenitifies
       occurred_at_col: column_timestamp_1  # dt
       ids:
         - select: "column_varchar_1"  # user_id
