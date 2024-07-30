@@ -464,212 +464,212 @@ models:
           type: rudder_id
           entity: user
 
-  - name: seg_rs_computed_sql
-    model_type: sql_template
-    model_spec:
-      materialization:
-        output_type: table
-        run_type: discrete
-      single_sql: |
-        {% with seg_ues = this.DeRef("models/segment_ues_sql") rs_ues = this.DeRef("models/rudderstack_ues_sql") %}
-          SELECT
-            coalesce(rs_ues.user_main_id,seg_ues.user_main_id) as user_main_id,
-            coalesce(rs_ues.user_id,seg_ues.id) as user_id,
-            coalesce(rs_ues.count_active_listing_alert_rs, seg_ues.count_active_listing_alert_seg) as count_active_listing_alert,
-            coalesce(rs_ues.count_active_saved_search_rs, seg_ues.count_active_saved_search_seg) as count_active_saved_search,
-            coalesce(rs_ues.count_homeowner_tracked_property_rs, seg_ues.count_homeowner_tracked_property_seg) as count_homeowner_tracked_property,
-            coalesce(rs_ues.count_homeowner_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_local_area_updates_email_consent_seg) as count_homeowner_tracked_property_local_area_updates_email_consent,
-            coalesce(rs_ues.count_homeowner_tracked_property_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_updates_email_consent_seg) as count_homeowner_tracked_property_updates_email_consent,
-            coalesce(rs_ues.count_tracked_property_rs, seg_ues.count_tracked_property_seg) as count_tracked_property,
-            coalesce(rs_ues.count_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_tracked_property_local_area_updates_email_consent_seg) as count_tracked_property_local_area_updates_email_consent,
-            coalesce(rs_ues.count_tracked_property_local_area_updates_push_consent_rs, seg_ues.count_tracked_property_local_area_updates_push_consent_seg) as count_tracked_property_local_area_updates_push_consent,
-            coalesce(rs_ues.count_tracked_property_updates_email_consent_rs, seg_ues.count_tracked_property_updates_email_consent_seg) as count_tracked_property_updates_email_consent,
-            coalesce(rs_ues.count_tracked_property_updates_push_consent_rs, seg_ues.count_tracked_property_updates_push_consent_seg) as count_tracked_property_updates_push_consent,
-            to_char(coalesce(rs_ues.created_at_rs, seg_ues.created_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as created_at,
-            coalesce(rs_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_seg) as homeowner_tracked_property_local_area_updates_email_consent_uprns,
-            coalesce(rs_ues.homeowner_tracked_property_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_updates_email_consent_uprns_seg) as homeowner_tracked_property_updates_email_consent_uprns,
-            coalesce(rs_ues.homeowner_tracked_property_uprns_rs, seg_ues.homeowner_tracked_property_uprns_seg) as homeowner_tracked_property_uprns,
-            coalesce(rs_ues.last_homeowner_tracked_property_address_rs, seg_ues.last_homeowner_tracked_property_address_seg) as last_homeowner_tracked_property_address,         
-            to_char(coalesce(rs_ues.last_homeowner_tracked_property_sold_date_rs, seg_ues.last_homeowner_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_sold_date,            
-            coalesce(rs_ues.last_homeowner_tracked_property_sold_price_rs, seg_ues.last_homeowner_tracked_property_sold_price_seg) as last_homeowner_tracked_property_sold_price,           
-            to_char(coalesce(rs_ues.last_homeowner_tracked_property_timestamp_rs, seg_ues.last_homeowner_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_timestamp,
-            coalesce(rs_ues.last_homeowner_tracked_property_uprn_rs, seg_ues.last_homeowner_tracked_property_uprn_seg) as last_homeowner_tracked_property_uprn,
-            coalesce(rs_ues.last_landlord_tracked_property_address_rs, seg_ues.last_landlord_tracked_property_address_seg) as last_landlord_tracked_property_address,
-            to_char(coalesce(rs_ues.last_landlord_tracked_property_sold_date_rs, seg_ues.last_landlord_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_sold_date,
-            coalesce(rs_ues.last_landlord_tracked_property_sold_price_rs, seg_ues.last_landlord_tracked_property_sold_price_seg) as last_landlord_tracked_property_sold_price,
-            to_char(coalesce(rs_ues.last_landlord_tracked_property_timestamp_rs, seg_ues.last_landlord_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_timestamp,
-            coalesce(rs_ues.last_landlord_tracked_property_uprn_rs, seg_ues.last_landlord_tracked_property_uprn_seg) as last_landlord_tracked_property_uprn,
-            to_char(coalesce(rs_ues.last_listing_alert_updated_timestamp_rs, seg_ues.last_listing_alert_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_listing_alert_updated_timestamp,          
-            to_char(coalesce(rs_ues.last_other_tracked_property_timestamp_rs, seg_ues.last_other_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_other_tracked_property_timestamp,           
-            to_char(coalesce(rs_ues.last_saved_search_updated_timestamp_rs, seg_ues.last_saved_search_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_saved_search_updated_timestamp,           
-            to_char(coalesce(rs_ues.last_tracked_property_timestamp_rs, seg_ues.last_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_timestamp,         
-            to_char(coalesce(rs_ues.last_tracked_property_updated_timestamp_rs, seg_ues.last_tracked_property_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_updated_timestamp,         
-            coalesce(rs_ues.last_tracked_property_uprn_rs, seg_ues.last_tracked_property_uprn_seg) as last_tracked_property_uprn,
-            coalesce(rs_ues.marketing_consent_new_homes_rs, seg_ues.marketing_consent_new_homes_seg) as marketing_consent_new_homes,
-            coalesce(rs_ues.marketing_consent_news_rs, seg_ues.marketing_consent_news_seg) as marketing_consent_news,
-            coalesce(rs_ues.marketing_consent_offers_rs, seg_ues.marketing_consent_offers_seg) as marketing_consent_offers,
-            coalesce(rs_ues.situation_are_you_a_first_time_buyer_rs, seg_ues.situation_are_you_a_first_time_buyer_seg) as situation_are_you_a_first_time_buyer,           
-            to_char(coalesce(rs_ues.situation_are_you_a_first_time_buyer_updated_at_rs, seg_ues.situation_are_you_a_first_time_buyer_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_first_time_buyer_updated_at,           
-            coalesce(rs_ues.situation_are_you_a_homeowner_rs, seg_ues.situation_are_you_a_homeowner_seg) as situation_are_you_a_homeowner,          
-            to_char(coalesce(rs_ues.situation_are_you_a_homeowner_updated_at_rs, seg_ues.situation_are_you_a_homeowner_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_homeowner_updated_at,          
-            coalesce(rs_ues.situation_are_you_a_property_investor_rs, seg_ues.situation_are_you_a_property_investor_seg) as situation_are_you_a_property_investor,          
-            to_char(coalesce(rs_ues.situation_are_you_a_property_investor_updated_at_rs, seg_ues.situation_are_you_a_property_investor_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_property_investor_updated_at,         
-            coalesce(rs_ues.situation_are_you_looking_to_buy_rs, seg_ues.situation_are_you_looking_to_buy_seg) as situation_are_you_looking_to_buy,           
-            to_char(coalesce(rs_ues.situation_are_you_looking_to_buy_updated_at_rs, seg_ues.situation_are_you_looking_to_buy_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_looking_to_buy_updated_at,         
-            coalesce(rs_ues.situation_are_you_selling_a_property_rs, seg_ues.situation_are_you_selling_a_property_seg) as situation_are_you_selling_a_property,           
-            to_char(coalesce(rs_ues.situation_are_you_selling_a_property_updated_at_rs, seg_ues.situation_are_you_selling_a_property_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_selling_a_property_updated_at,         
-            coalesce(rs_ues.situation_do_you_have_a_mortgage_rs, seg_ues.situation_do_you_have_a_mortgage_seg) as situation_do_you_have_a_mortgage,         
-            to_char(coalesce(rs_ues.situation_do_you_have_a_mortgage_updated_at_rs, seg_ues.situation_do_you_have_a_mortgage_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_do_you_have_a_mortgage_updated_at,         
-            coalesce(rs_ues.situation_is_it_already_on_the_market_rs, seg_ues.situation_is_it_already_on_the_market_seg) as situation_is_it_already_on_the_market,          
-            to_char(coalesce(rs_ues.situation_is_it_already_on_the_market_updated_at_rs, seg_ues.situation_is_it_already_on_the_market_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_is_it_already_on_the_market_updated_at,         
-            to_char(coalesce(rs_ues.situation_last_updated_at_rs, seg_ues.situation_last_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_last_updated_at,        
-            coalesce(rs_ues.situation_what_is_your_current_property_goal_rs, seg_ues.situation_what_is_your_current_property_goal_seg) as situation_what_is_your_current_property_goal,          
-            to_char(coalesce(rs_ues.situation_what_is_your_current_property_goal_updated_at_rs, seg_ues.situation_what_is_your_current_property_goal_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_what_is_your_current_property_goal_updated_at,         
-            coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_seg) as situation_when_does_your_current_mortgage_rate_expire,          
-            to_char(coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_when_does_your_current_mortgage_rate_expire_updated_at,          
-            coalesce(rs_ues.tracked_property_relationships_rs, seg_ues.tracked_property_relationships_seg) as tracked_property_relationships,
-            coalesce(rs_ues.tracked_property_uprns_rs, seg_ues.tracked_property_uprns_seg) as tracked_property_uprns,
-            coalesce(rs_ues.unregistered_rs, seg_ues.unregistered_seg) as unregistered,
-            coalesce(rs_ues.user_property_status_rs, seg_ues.user_property_status_seg) as user_property_status,
-            coalesce(rs_ues.user_status_rs, seg_ues.user_status_seg) as user_status,
-            coalesce(rs_ues.user_tracked_properties_rs, seg_ues.user_tracked_properties_seg) as user_tracked_properties,
-            coalesce(rs_ues.user_tracked_properties_with_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_consent_and_estimate_seg) as user_tracked_properties_with_consent_and_estimate,
-            coalesce(rs_ues.user_tracked_properties_with_push_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_push_consent_and_estimate_seg) as user_tracked_properties_with_push_consent_and_estimate
-          FROM {{rs_ues}} as rs_ues
-          FULL OUTER JOIN {{seg_ues}} as seg_ues
-          ON rs_ues.user_main_id = seg_ues.column_varchar_1
-        {% endwith %}
-      ids:
-        - select: "column_varchar_2"  # user_id
-          type: user_id
-          entity: user
-        - select: "column_varchar_1"  # user_main_id
-          type: rudder_id
-          entity: user
-      features:
-        - name: count_active_listing_alert
-        - name: count_active_saved_search
-        - name: count_homeowner_tracked_property
-        - name: count_homeowner_tracked_property_local_area_updates_email_consent
-        - name: count_homeowner_tracked_property_updates_email_consent
-        - name: count_tracked_property
-        - name: count_tracked_property_local_area_updates_email_consent
-        - name: count_tracked_property_local_area_updates_push_consent
-        - name: count_tracked_property_updates_email_consent
-        - name: count_tracked_property_updates_push_consent
-        - name: created_at
-        - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
-        - name: homeowner_tracked_property_updates_email_consent_uprns
-        - name: homeowner_tracked_property_uprns
-        - name: last_homeowner_tracked_property_address
-        - name: last_homeowner_tracked_property_sold_date
-        - name: last_homeowner_tracked_property_sold_price
-        - name: last_homeowner_tracked_property_timestamp
-        - name: last_homeowner_tracked_property_uprn
-        - name: last_landlord_tracked_property_address
-        - name: last_landlord_tracked_property_sold_date
-        - name: last_landlord_tracked_property_sold_price
-        - name: last_landlord_tracked_property_timestamp
-        - name: last_landlord_tracked_property_uprn
-        - name: last_listing_alert_updated_timestamp
-        - name: last_other_tracked_property_timestamp
-        - name: last_saved_search_updated_timestamp
-        - name: last_tracked_property_timestamp
-        - name: last_tracked_property_updated_timestamp
-        - name: last_tracked_property_uprn
-        - name: marketing_consent_new_homes
-        - name: marketing_consent_news
-        - name: marketing_consent_offers
-        - name: situation_are_you_a_first_time_buyer
-        - name: situation_are_you_a_first_time_buyer_updated_at
-        - name: situation_are_you_a_homeowner
-        - name: situation_are_you_a_homeowner_updated_at
-        - name: situation_are_you_a_property_investor
-        - name: situation_are_you_a_property_investor_updated_at
-        - name: situation_are_you_looking_to_buy
-        - name: situation_are_you_looking_to_buy_updated_at
-        - name: situation_are_you_selling_a_property
-        - name: situation_are_you_selling_a_property_updated_at
-        - name: situation_do_you_have_a_mortgage
-        - name: situation_do_you_have_a_mortgage_updated_at
-        - name: situation_is_it_already_on_the_market
-        - name: situation_is_it_already_on_the_market_updated_at
-        - name: situation_last_updated_at
-        - name: situation_what_is_your_current_property_goal
-        - name: situation_what_is_your_current_property_goal_updated_at
-        - name: situation_when_does_your_current_mortgage_rate_expire
-        - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
-        - name: tracked_property_relationships
-        - name: tracked_property_uprns
-        - name: unregistered
-        - name: user_property_status
-        - name: user_status
-        - name: user_tracked_properties
-        - name: user_tracked_properties_with_consent_and_estimate
-        - name: user_tracked_properties_with_push_consent_and_estimate
-      contract:
-        is_optional: false
-        is_event_stream: false
-        with_entity_ids:
-          - user
-        with_columns:
-          - name: count_active_listing_alert
-          - name: count_active_saved_search
-          - name: count_homeowner_tracked_property
-          - name: count_homeowner_tracked_property_local_area_updates_email_consent
-          - name: count_homeowner_tracked_property_updates_email_consent
-          - name: count_tracked_property
-          - name: count_tracked_property_local_area_updates_email_consent
-          - name: count_tracked_property_local_area_updates_push_consent
-          - name: count_tracked_property_updates_email_consent
-          - name: count_tracked_property_updates_push_consent
-          - name: created_at
-          - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
-          - name: homeowner_tracked_property_updates_email_consent_uprns
-          - name: homeowner_tracked_property_uprns
-          - name: last_homeowner_tracked_property_address
-          - name: last_homeowner_tracked_property_sold_date
-          - name: last_homeowner_tracked_property_sold_price
-          - name: last_homeowner_tracked_property_timestamp
-          - name: last_homeowner_tracked_property_uprn
-          - name: last_landlord_tracked_property_address
-          - name: last_landlord_tracked_property_sold_date
-          - name: last_landlord_tracked_property_sold_price
-          - name: last_landlord_tracked_property_timestamp
-          - name: last_landlord_tracked_property_uprn
-          - name: last_listing_alert_updated_timestamp
-          - name: last_other_tracked_property_timestamp
-          - name: last_saved_search_updated_timestamp
-          - name: last_tracked_property_timestamp
-          - name: last_tracked_property_updated_timestamp
-          - name: last_tracked_property_uprn
-          - name: marketing_consent_new_homes
-          - name: marketing_consent_news
-          - name: marketing_consent_offers
-          - name: situation_are_you_a_first_time_buyer
-          - name: situation_are_you_a_first_time_buyer_updated_at
-          - name: situation_are_you_a_homeowner
-          - name: situation_are_you_a_homeowner_updated_at
-          - name: situation_are_you_a_property_investor
-          - name: situation_are_you_a_property_investor_updated_at
-          - name: situation_are_you_looking_to_buy
-          - name: situation_are_you_looking_to_buy_updated_at
-          - name: situation_are_you_selling_a_property
-          - name: situation_are_you_selling_a_property_updated_at
-          - name: situation_do_you_have_a_mortgage
-          - name: situation_do_you_have_a_mortgage_updated_at
-          - name: situation_is_it_already_on_the_market
-          - name: situation_is_it_already_on_the_market_updated_at
-          - name: situation_last_updated_at
-          - name: situation_what_is_your_current_property_goal
-          - name: situation_what_is_your_current_property_goal_updated_at
-          - name: situation_when_does_your_current_mortgage_rate_expire
-          - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
-          - name: tracked_property_relationships
-          - name: tracked_property_uprns
-          - name: unregistered
-          - name: user_property_status
-          - name: user_status
-          - name: user_tracked_properties
-          - name: user_tracked_properties_with_consent_and_estimate
-          - name: user_tracked_properties_with_push_consent_and_estimate
+  # - name: seg_rs_computed_sql
+    # model_type: sql_template
+    # model_spec:
+    #   materialization:
+    #     output_type: table
+    #     run_type: discrete
+    #   single_sql: |
+    #     {% with seg_ues = this.DeRef("models/segment_ues_sql") rs_ues = this.DeRef("models/rudderstack_ues_sql") %}
+    #       SELECT
+    #         coalesce(rs_ues.user_main_id,seg_ues.user_main_id) as user_main_id,
+    #         coalesce(rs_ues.user_id,seg_ues.id) as user_id,
+    #         coalesce(rs_ues.count_active_listing_alert_rs, seg_ues.count_active_listing_alert_seg) as count_active_listing_alert,
+    #         coalesce(rs_ues.count_active_saved_search_rs, seg_ues.count_active_saved_search_seg) as count_active_saved_search,
+    #         coalesce(rs_ues.count_homeowner_tracked_property_rs, seg_ues.count_homeowner_tracked_property_seg) as count_homeowner_tracked_property,
+    #         coalesce(rs_ues.count_homeowner_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_local_area_updates_email_consent_seg) as count_homeowner_tracked_property_local_area_updates_email_consent,
+    #         coalesce(rs_ues.count_homeowner_tracked_property_updates_email_consent_rs, seg_ues.count_homeowner_tracked_property_updates_email_consent_seg) as count_homeowner_tracked_property_updates_email_consent,
+    #         coalesce(rs_ues.count_tracked_property_rs, seg_ues.count_tracked_property_seg) as count_tracked_property,
+    #         coalesce(rs_ues.count_tracked_property_local_area_updates_email_consent_rs, seg_ues.count_tracked_property_local_area_updates_email_consent_seg) as count_tracked_property_local_area_updates_email_consent,
+    #         coalesce(rs_ues.count_tracked_property_local_area_updates_push_consent_rs, seg_ues.count_tracked_property_local_area_updates_push_consent_seg) as count_tracked_property_local_area_updates_push_consent,
+    #         coalesce(rs_ues.count_tracked_property_updates_email_consent_rs, seg_ues.count_tracked_property_updates_email_consent_seg) as count_tracked_property_updates_email_consent,
+    #         coalesce(rs_ues.count_tracked_property_updates_push_consent_rs, seg_ues.count_tracked_property_updates_push_consent_seg) as count_tracked_property_updates_push_consent,
+    #         to_char(coalesce(rs_ues.created_at_rs, seg_ues.created_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as created_at,
+    #         coalesce(rs_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_local_area_updates_email_consent_uprns_seg) as homeowner_tracked_property_local_area_updates_email_consent_uprns,
+    #         coalesce(rs_ues.homeowner_tracked_property_updates_email_consent_uprns_rs, seg_ues.homeowner_tracked_property_updates_email_consent_uprns_seg) as homeowner_tracked_property_updates_email_consent_uprns,
+    #         coalesce(rs_ues.homeowner_tracked_property_uprns_rs, seg_ues.homeowner_tracked_property_uprns_seg) as homeowner_tracked_property_uprns,
+    #         coalesce(rs_ues.last_homeowner_tracked_property_address_rs, seg_ues.last_homeowner_tracked_property_address_seg) as last_homeowner_tracked_property_address,         
+    #         to_char(coalesce(rs_ues.last_homeowner_tracked_property_sold_date_rs, seg_ues.last_homeowner_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_sold_date,            
+    #         coalesce(rs_ues.last_homeowner_tracked_property_sold_price_rs, seg_ues.last_homeowner_tracked_property_sold_price_seg) as last_homeowner_tracked_property_sold_price,           
+    #         to_char(coalesce(rs_ues.last_homeowner_tracked_property_timestamp_rs, seg_ues.last_homeowner_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_homeowner_tracked_property_timestamp,
+    #         coalesce(rs_ues.last_homeowner_tracked_property_uprn_rs, seg_ues.last_homeowner_tracked_property_uprn_seg) as last_homeowner_tracked_property_uprn,
+    #         coalesce(rs_ues.last_landlord_tracked_property_address_rs, seg_ues.last_landlord_tracked_property_address_seg) as last_landlord_tracked_property_address,
+    #         to_char(coalesce(rs_ues.last_landlord_tracked_property_sold_date_rs, seg_ues.last_landlord_tracked_property_sold_date_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_sold_date,
+    #         coalesce(rs_ues.last_landlord_tracked_property_sold_price_rs, seg_ues.last_landlord_tracked_property_sold_price_seg) as last_landlord_tracked_property_sold_price,
+    #         to_char(coalesce(rs_ues.last_landlord_tracked_property_timestamp_rs, seg_ues.last_landlord_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_landlord_tracked_property_timestamp,
+    #         coalesce(rs_ues.last_landlord_tracked_property_uprn_rs, seg_ues.last_landlord_tracked_property_uprn_seg) as last_landlord_tracked_property_uprn,
+    #         to_char(coalesce(rs_ues.last_listing_alert_updated_timestamp_rs, seg_ues.last_listing_alert_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_listing_alert_updated_timestamp,          
+    #         to_char(coalesce(rs_ues.last_other_tracked_property_timestamp_rs, seg_ues.last_other_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_other_tracked_property_timestamp,           
+    #         to_char(coalesce(rs_ues.last_saved_search_updated_timestamp_rs, seg_ues.last_saved_search_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_saved_search_updated_timestamp,           
+    #         to_char(coalesce(rs_ues.last_tracked_property_timestamp_rs, seg_ues.last_tracked_property_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_timestamp,         
+    #         to_char(coalesce(rs_ues.last_tracked_property_updated_timestamp_rs, seg_ues.last_tracked_property_updated_timestamp_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as last_tracked_property_updated_timestamp,         
+    #         coalesce(rs_ues.last_tracked_property_uprn_rs, seg_ues.last_tracked_property_uprn_seg) as last_tracked_property_uprn,
+    #         coalesce(rs_ues.marketing_consent_new_homes_rs, seg_ues.marketing_consent_new_homes_seg) as marketing_consent_new_homes,
+    #         coalesce(rs_ues.marketing_consent_news_rs, seg_ues.marketing_consent_news_seg) as marketing_consent_news,
+    #         coalesce(rs_ues.marketing_consent_offers_rs, seg_ues.marketing_consent_offers_seg) as marketing_consent_offers,
+    #         coalesce(rs_ues.situation_are_you_a_first_time_buyer_rs, seg_ues.situation_are_you_a_first_time_buyer_seg) as situation_are_you_a_first_time_buyer,           
+    #         to_char(coalesce(rs_ues.situation_are_you_a_first_time_buyer_updated_at_rs, seg_ues.situation_are_you_a_first_time_buyer_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_first_time_buyer_updated_at,           
+    #         coalesce(rs_ues.situation_are_you_a_homeowner_rs, seg_ues.situation_are_you_a_homeowner_seg) as situation_are_you_a_homeowner,          
+    #         to_char(coalesce(rs_ues.situation_are_you_a_homeowner_updated_at_rs, seg_ues.situation_are_you_a_homeowner_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_homeowner_updated_at,          
+    #         coalesce(rs_ues.situation_are_you_a_property_investor_rs, seg_ues.situation_are_you_a_property_investor_seg) as situation_are_you_a_property_investor,          
+    #         to_char(coalesce(rs_ues.situation_are_you_a_property_investor_updated_at_rs, seg_ues.situation_are_you_a_property_investor_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_a_property_investor_updated_at,         
+    #         coalesce(rs_ues.situation_are_you_looking_to_buy_rs, seg_ues.situation_are_you_looking_to_buy_seg) as situation_are_you_looking_to_buy,           
+    #         to_char(coalesce(rs_ues.situation_are_you_looking_to_buy_updated_at_rs, seg_ues.situation_are_you_looking_to_buy_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_looking_to_buy_updated_at,         
+    #         coalesce(rs_ues.situation_are_you_selling_a_property_rs, seg_ues.situation_are_you_selling_a_property_seg) as situation_are_you_selling_a_property,           
+    #         to_char(coalesce(rs_ues.situation_are_you_selling_a_property_updated_at_rs, seg_ues.situation_are_you_selling_a_property_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_are_you_selling_a_property_updated_at,         
+    #         coalesce(rs_ues.situation_do_you_have_a_mortgage_rs, seg_ues.situation_do_you_have_a_mortgage_seg) as situation_do_you_have_a_mortgage,         
+    #         to_char(coalesce(rs_ues.situation_do_you_have_a_mortgage_updated_at_rs, seg_ues.situation_do_you_have_a_mortgage_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_do_you_have_a_mortgage_updated_at,         
+    #         coalesce(rs_ues.situation_is_it_already_on_the_market_rs, seg_ues.situation_is_it_already_on_the_market_seg) as situation_is_it_already_on_the_market,          
+    #         to_char(coalesce(rs_ues.situation_is_it_already_on_the_market_updated_at_rs, seg_ues.situation_is_it_already_on_the_market_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_is_it_already_on_the_market_updated_at,         
+    #         to_char(coalesce(rs_ues.situation_last_updated_at_rs, seg_ues.situation_last_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_last_updated_at,        
+    #         coalesce(rs_ues.situation_what_is_your_current_property_goal_rs, seg_ues.situation_what_is_your_current_property_goal_seg) as situation_what_is_your_current_property_goal,          
+    #         to_char(coalesce(rs_ues.situation_what_is_your_current_property_goal_updated_at_rs, seg_ues.situation_what_is_your_current_property_goal_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_what_is_your_current_property_goal_updated_at,         
+    #         coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_seg) as situation_when_does_your_current_mortgage_rate_expire,          
+    #         to_char(coalesce(rs_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_rs, seg_ues.situation_when_does_your_current_mortgage_rate_expire_updated_at_seg), 'YYYY-MM-DD"T"HH24:MI:SS.000Z') as situation_when_does_your_current_mortgage_rate_expire_updated_at,          
+    #         coalesce(rs_ues.tracked_property_relationships_rs, seg_ues.tracked_property_relationships_seg) as tracked_property_relationships,
+    #         coalesce(rs_ues.tracked_property_uprns_rs, seg_ues.tracked_property_uprns_seg) as tracked_property_uprns,
+    #         coalesce(rs_ues.unregistered_rs, seg_ues.unregistered_seg) as unregistered,
+    #         coalesce(rs_ues.user_property_status_rs, seg_ues.user_property_status_seg) as user_property_status,
+    #         coalesce(rs_ues.user_status_rs, seg_ues.user_status_seg) as user_status,
+    #         coalesce(rs_ues.user_tracked_properties_rs, seg_ues.user_tracked_properties_seg) as user_tracked_properties,
+    #         coalesce(rs_ues.user_tracked_properties_with_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_consent_and_estimate_seg) as user_tracked_properties_with_consent_and_estimate,
+    #         coalesce(rs_ues.user_tracked_properties_with_push_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_push_consent_and_estimate_seg) as user_tracked_properties_with_push_consent_and_estimate
+    #       FROM {{rs_ues}} as rs_ues
+    #       FULL OUTER JOIN {{seg_ues}} as seg_ues
+    #       ON rs_ues.user_main_id = seg_ues.column_varchar_1
+    #     {% endwith %}
+    #   ids:
+    #     - select: "column_varchar_2"  # user_id
+    #       type: user_id
+    #       entity: user
+    #     - select: "column_varchar_1"  # user_main_id
+    #       type: rudder_id
+    #       entity: user
+    #   features:
+    #     - name: count_active_listing_alert
+    #     - name: count_active_saved_search
+    #     - name: count_homeowner_tracked_property
+    #     - name: count_homeowner_tracked_property_local_area_updates_email_consent
+    #     - name: count_homeowner_tracked_property_updates_email_consent
+    #     - name: count_tracked_property
+    #     - name: count_tracked_property_local_area_updates_email_consent
+    #     - name: count_tracked_property_local_area_updates_push_consent
+    #     - name: count_tracked_property_updates_email_consent
+    #     - name: count_tracked_property_updates_push_consent
+    #     - name: created_at
+    #     - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
+    #     - name: homeowner_tracked_property_updates_email_consent_uprns
+    #     - name: homeowner_tracked_property_uprns
+    #     - name: last_homeowner_tracked_property_address
+    #     - name: last_homeowner_tracked_property_sold_date
+    #     - name: last_homeowner_tracked_property_sold_price
+    #     - name: last_homeowner_tracked_property_timestamp
+    #     - name: last_homeowner_tracked_property_uprn
+    #     - name: last_landlord_tracked_property_address
+    #     - name: last_landlord_tracked_property_sold_date
+    #     - name: last_landlord_tracked_property_sold_price
+    #     - name: last_landlord_tracked_property_timestamp
+    #     - name: last_landlord_tracked_property_uprn
+    #     - name: last_listing_alert_updated_timestamp
+    #     - name: last_other_tracked_property_timestamp
+    #     - name: last_saved_search_updated_timestamp
+    #     - name: last_tracked_property_timestamp
+    #     - name: last_tracked_property_updated_timestamp
+    #     - name: last_tracked_property_uprn
+    #     - name: marketing_consent_new_homes
+    #     - name: marketing_consent_news
+    #     - name: marketing_consent_offers
+    #     - name: situation_are_you_a_first_time_buyer
+    #     - name: situation_are_you_a_first_time_buyer_updated_at
+    #     - name: situation_are_you_a_homeowner
+    #     - name: situation_are_you_a_homeowner_updated_at
+    #     - name: situation_are_you_a_property_investor
+    #     - name: situation_are_you_a_property_investor_updated_at
+    #     - name: situation_are_you_looking_to_buy
+    #     - name: situation_are_you_looking_to_buy_updated_at
+    #     - name: situation_are_you_selling_a_property
+    #     - name: situation_are_you_selling_a_property_updated_at
+    #     - name: situation_do_you_have_a_mortgage
+    #     - name: situation_do_you_have_a_mortgage_updated_at
+    #     - name: situation_is_it_already_on_the_market
+    #     - name: situation_is_it_already_on_the_market_updated_at
+    #     - name: situation_last_updated_at
+    #     - name: situation_what_is_your_current_property_goal
+    #     - name: situation_what_is_your_current_property_goal_updated_at
+    #     - name: situation_when_does_your_current_mortgage_rate_expire
+    #     - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
+    #     - name: tracked_property_relationships
+    #     - name: tracked_property_uprns
+    #     - name: unregistered
+    #     - name: user_property_status
+    #     - name: user_status
+    #     - name: user_tracked_properties
+    #     - name: user_tracked_properties_with_consent_and_estimate
+    #     - name: user_tracked_properties_with_push_consent_and_estimate
+    #   contract:
+    #     is_optional: false
+    #     is_event_stream: false
+    #     with_entity_ids:
+    #       - user
+    #     with_columns:
+    #       - name: count_active_listing_alert
+    #       - name: count_active_saved_search
+    #       - name: count_homeowner_tracked_property
+    #       - name: count_homeowner_tracked_property_local_area_updates_email_consent
+    #       - name: count_homeowner_tracked_property_updates_email_consent
+    #       - name: count_tracked_property
+    #       - name: count_tracked_property_local_area_updates_email_consent
+    #       - name: count_tracked_property_local_area_updates_push_consent
+    #       - name: count_tracked_property_updates_email_consent
+    #       - name: count_tracked_property_updates_push_consent
+    #       - name: created_at
+    #       - name: homeowner_tracked_property_local_area_updates_email_consent_uprns
+    #       - name: homeowner_tracked_property_updates_email_consent_uprns
+    #       - name: homeowner_tracked_property_uprns
+    #       - name: last_homeowner_tracked_property_address
+    #       - name: last_homeowner_tracked_property_sold_date
+    #       - name: last_homeowner_tracked_property_sold_price
+    #       - name: last_homeowner_tracked_property_timestamp
+    #       - name: last_homeowner_tracked_property_uprn
+    #       - name: last_landlord_tracked_property_address
+    #       - name: last_landlord_tracked_property_sold_date
+    #       - name: last_landlord_tracked_property_sold_price
+    #       - name: last_landlord_tracked_property_timestamp
+    #       - name: last_landlord_tracked_property_uprn
+    #       - name: last_listing_alert_updated_timestamp
+    #       - name: last_other_tracked_property_timestamp
+    #       - name: last_saved_search_updated_timestamp
+    #       - name: last_tracked_property_timestamp
+    #       - name: last_tracked_property_updated_timestamp
+    #       - name: last_tracked_property_uprn
+    #       - name: marketing_consent_new_homes
+    #       - name: marketing_consent_news
+    #       - name: marketing_consent_offers
+    #       - name: situation_are_you_a_first_time_buyer
+    #       - name: situation_are_you_a_first_time_buyer_updated_at
+    #       - name: situation_are_you_a_homeowner
+    #       - name: situation_are_you_a_homeowner_updated_at
+    #       - name: situation_are_you_a_property_investor
+    #       - name: situation_are_you_a_property_investor_updated_at
+    #       - name: situation_are_you_looking_to_buy
+    #       - name: situation_are_you_looking_to_buy_updated_at
+    #       - name: situation_are_you_selling_a_property
+    #       - name: situation_are_you_selling_a_property_updated_at
+    #       - name: situation_do_you_have_a_mortgage
+    #       - name: situation_do_you_have_a_mortgage_updated_at
+    #       - name: situation_is_it_already_on_the_market
+    #       - name: situation_is_it_already_on_the_market_updated_at
+    #       - name: situation_last_updated_at
+    #       - name: situation_what_is_your_current_property_goal
+    #       - name: situation_what_is_your_current_property_goal_updated_at
+    #       - name: situation_when_does_your_current_mortgage_rate_expire
+    #       - name: situation_when_does_your_current_mortgage_rate_expire_updated_at
+    #       - name: tracked_property_relationships
+    #       - name: tracked_property_uprns
+    #       - name: unregistered
+    #       - name: user_property_status
+    #       - name: user_status
+    #       - name: user_tracked_properties
+    #       - name: user_tracked_properties_with_consent_and_estimate
+    #       - name: user_tracked_properties_with_push_consent_and_estimate
