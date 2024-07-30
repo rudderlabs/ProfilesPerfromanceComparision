@@ -324,7 +324,7 @@ models:
       single_sql: |
         {% with rs_ues = this.DeRef("inputs/rudderstack_ues_idenitifies") ids = this.DeRef("models/user_id_graph") %}
           SELECT
-            column_varchar_1,
+            column_varchar_1 as user_main_id,
             any_value(column_varchar_2) AS user_id,
             any_value(count_active_listing_alert_rs) as count_active_listing_alert_rs,
             any_value(count_active_saved_search_rs) as count_active_saved_search_rs,
@@ -537,7 +537,7 @@ models:
             coalesce(rs_ues.user_tracked_properties_with_push_consent_and_estimate_rs, seg_ues.user_tracked_properties_with_push_consent_and_estimate_seg) as user_tracked_properties_with_push_consent_and_estimate
           FROM {{rs_ues}} as rs_ues
           FULL OUTER JOIN {{seg_ues}} as seg_ues
-          ON rs_ues.user_main_id = seg_ues.user_main_id
+          ON rs_ues.user_main_id = seg_ues.column_varchar_1
         {% endwith %}
       ids:
         - select: "column_varchar_2"  # user_id
